@@ -1,7 +1,3 @@
-# Ansible Collection - opengear.om
-
-Documentation for the collection.
-
 # Opengear OM Collection
 
 The Ansible Opengear OM collection includes a variety of Ansible content to help automate the management of Opengear OM network appliances.
