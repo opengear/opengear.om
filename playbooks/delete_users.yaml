@@ -1,0 +1,16 @@
+---
+
+- hosts: ngcsdevices
+  collections:
+    - opengear_om
+  connection: httpapi
+  gather_facts: no
+  tasks:
+    - name: Delete user
+      opengear.om.om_users:
+        config:
+        - username: test3
+        - username: test1
+        - username: test2
+        state:
+          deleted

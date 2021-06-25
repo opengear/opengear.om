@@ -1,0 +1,21 @@
+---
+
+- hosts: ngcsdevices
+  collections:
+    - opengear_om
+  connection: httpapi
+  gather_facts: no
+  tasks:
+    - name: Add user
+      opengear.om.om_users:
+        config:
+        - username: test1
+          enabled: no
+          no_password: yes
+          description: This user was changed.
+        - username: test3
+          enabled: yes
+          no_password: yes
+          description: This user was added.
+        state:
+          overridden

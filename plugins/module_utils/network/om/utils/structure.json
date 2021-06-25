@@ -1,0 +1,13 @@
+{
+  "system": {
+    "hostname": ["system_hostname", "hostname"],
+    "banner": ["system_banner", "banner"],
+    "webui_session_timeout": ["system_webui_session_timeout", "timeout"],
+    "cli_session_timeout": ["system_cli_session_timeout", "timeout"],
+    "system_authorized_keys": ["system_authorized_keys"],
+    "ssh_port": ["system_ssh_port", "port"],
+    "timezone": ["system_timezone", "timezone"],
+    "time": ["time", "time"],
+    "admin_info": ["system_admin_info"]
+  }
+}

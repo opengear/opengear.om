@@ -1,0 +1,18 @@
+---
+
+- hosts: ngcsdevices
+  collections:
+    - opengear_om
+  connection: httpapi
+  gather_facts: no
+  tasks:
+    - name: Add conn
+      opengear.om.om_conns:
+        config:
+        - mode: static
+          physif: net2
+          ipv4_static_settings:
+            netmask: 255.255.255.0
+            address: 192.168.0.31
+        state:
+          replaced

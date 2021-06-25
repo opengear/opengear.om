@@ -1,0 +1,36 @@
+---
+
+- hosts: ngcsdevices
+  collections:
+    - opengear_om
+  connection: httpapi
+  tasks:
+    - name: Add groups
+      opengear.om.om_groups:
+        config:
+        - groupname: netgrp
+          enabled: yes
+          mode: global
+          role: Administrator
+          description: Group for users created automatically via network authentication
+        - groupname: test4
+          enabled: yes
+          mode: global
+          role: Administrator
+          description: This group was changed.
+        - groupname: test5
+          enabled: no
+          mode: global
+          role: Administrator
+          description: This group was added.
+        - groupname: test7
+          enabled: yes
+          description: This group was added.
+          role: ConsoleUser
+          mode: scoped
+          ports:
+          - serial/by-opengear-id/port01
+          - serial/by-opengear-id/port05
+          - serial/by-opengear-id/port16
+        state:
+          overridden

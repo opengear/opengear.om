@@ -1,0 +1,43 @@
+---
+
+- hosts: ngcsdevices
+  collections:
+    - opengear_om
+  connection: httpapi
+  gather_facts: no
+  tasks:
+    - name: Add group
+      opengear.om.om_groups:
+        config:
+        - groupname: "test21"
+          enabled: yes
+          description: This group was added.
+          mode: "scoped"
+          role: "ConsoleUser"
+          ports: 
+          - ports-1
+          - ports-4
+          - ports-14
+        state:
+          merged
+          
+    - name: Add user
+      opengear.om.om_users:
+        config:
+        - username: test4
+          description: This user was added.
+          no_password: no
+          password: Test4
+          ssh_password_enabled: no
+          groups:
+          - test21
+          enabled: true
+        - username: test5
+          description: This user was added.
+          no_password: yes
+          ssh_password_enabled: no
+          groups:
+          - test21
+          enabled: true
+        state:
+          overridden

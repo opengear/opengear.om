@@ -1,0 +1,16 @@
+---
+
+- hosts: ngcsdevices
+  collections:
+    - opengear_om
+  connection: httpapi
+  tasks:
+    - name: Add Google NTP server
+      opengear.om.om_services:
+        config:
+          ntp:
+            enabled: yes
+            servers:
+            - value: au.pool.ntp.org
+        state:
+          replaced

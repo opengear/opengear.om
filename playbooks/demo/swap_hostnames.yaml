@@ -1,0 +1,24 @@
+---
+
+- hosts: ngcsdevices
+  collections:
+    - opengear_om
+  connection: httpapi
+  gather_facts: no
+  tasks:
+    - name: Get system info
+      opengear.om.om_facts:
+        gather_subset: min
+        gather_network_resources: system
+        
+    - name: Swap Hostnames
+      opengear.om.om_system:
+        config:  
+          hostname: "{{ hostvars['NGCS2']['ansible_facts']['network_resources']['system']['hostname'] }}"
+      when: inventory_hostname == 'NGCS1'
+          
+    - name: Swap Hostnames
+      opengear.om.om_system:
+        config:
+          hostname: "{{ hostvars['NGCS1']['ansible_facts']['network_resources']['system']['hostname'] }}"
+      when: inventory_hostname == 'NGCS2'
