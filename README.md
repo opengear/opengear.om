@@ -62,7 +62,7 @@ The following example task replaces configuration changes in the existing config
           enabled: true
           no_password: true
           groups:
-          - group1
+          - group2
       state: replaced
 
 ```
