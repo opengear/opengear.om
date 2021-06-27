@@ -45,13 +45,13 @@ tags: [opengear, om, restapi, networking]
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: https://bitbucket.org/opengear/automated-device-config/src/main/
+repository: https://github.com/opengear/opengear.om
 
 # The URL to any online docs
-documentation: http://docs.example.com
+# documentation: http://docs.example.com
 
 # The URL to the homepage of the collection/project
-homepage: http://example.com
+# homepage: http://example.com
 
 # The URL to the collection issue tracker
-issues: http://example.com/issue/tracker
+# issues: http://example.com/issue/tracker
