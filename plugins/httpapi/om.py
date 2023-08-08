@@ -7,6 +7,7 @@ import json
 from ansible.module_utils.connection import ConnectionError
 from ansible.plugins.httpapi import HttpApiBase
 
+
 def handle_response(response):
     if response:
         handled_response = json.loads(response.getvalue())

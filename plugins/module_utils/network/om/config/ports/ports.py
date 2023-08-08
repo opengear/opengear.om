@@ -30,7 +30,6 @@ from ansible.module_utils.connection import ConnectionError
 
 from ansible_collections.opengear.om.plugins.module_utils.network.om.utils.utils import (
     command_builder,
-    find_instance_id,
     is_subset,
 )
 

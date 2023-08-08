@@ -81,16 +81,16 @@ class TestOmUsersModule(TestOmModule):
         )
 
         commands = [
-                dict(path='users/users-1',
-                     data=dict(user=dict(username="user1-modified", description="This user was changed", enabled=False,
-                               no_password=True, ssh_password_enabled=True, password=None,
-                               hashed_password="$5$vqpQsIj./5/2OOBo$tTUYAJaEqbZYf4aipKicPF5bpkkGSEqtBy3t4dylp0/",
-                               groups=["g2", "g1"])),
-                     method='PUT'),
-                dict(path='users/',
-                     data=dict(user=dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                               groups=["g1"])),
-                     method='POST')]
+            dict(path='users/users-1',
+                data=dict(user=dict(username="user1-modified", description="This user was changed", enabled=False,
+                            no_password=True, ssh_password_enabled=True, password=None,
+                            hashed_password="$5$vqpQsIj./5/2OOBo$tTUYAJaEqbZYf4aipKicPF5bpkkGSEqtBy3t4dylp0/",
+                            groups=["g2", "g1"])),
+                    method='PUT'),
+            dict(path='users/',
+                data=dict(user=dict(username="user3", description="This user was added", enabled=True, no_password=True,
+                            groups=["g1"])),
+                method='POST')]
         self.execute_module(changed=True, commands=commands)
 
     def test_om_users_merged_idempotent(self):
