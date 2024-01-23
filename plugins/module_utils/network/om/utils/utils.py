@@ -9,12 +9,11 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import json
+import json, os
 
 
 def get_restapi_body_structure():
-    with open('/home/avankat/Documents/automated-device-config/opengear.om/'
-              'plugins/module_utils/network/om/utils/structure.json') as file:
+    with open(os.path.dirname(__file__) + '/structure.json') as file:
         return json.load(file)
 
 
