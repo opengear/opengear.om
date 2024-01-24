@@ -1,9 +1,24 @@
 # -*- coding: utf-8 -*-
+#
+# Copyright: (c) 2024, Opengear Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
+
+DOCUMENTATION = r'''
+---
+name: om
+short_description: HttpApi Plugin for Opengear OM & CM8100 devices
+description:
+  - This HttpApi plugin provides methods to connect to Opengear OM & CM8100 devices over a HTTP(S)-based API.
+options: {}
+version_added: "1.0.2"
+author:
+  - Adrian Van Katwyk (@avankatwyk)
+  - Matt Witmer (@mattwitt)
+'''
 
 import json
 
