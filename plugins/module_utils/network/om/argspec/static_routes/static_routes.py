@@ -43,6 +43,7 @@ class StaticRoutesArgs(object):  # pylint: disable=R0903
                                             'destination_netmask': {'type': 'int'},
                                             'gateway_address': {'type': 'str'},
                                             'id': {'type': 'str'},
+                                            'description': {'type': 'str'},
                                             'interface': {'type': 'str'},
                                             'metric': {'type': 'int'}},
                                 'type': 'list'},
