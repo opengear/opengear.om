@@ -107,7 +107,7 @@ class ServicesArgs(object):  # pylint: disable=R0903
                                             'snmpd': {'options': {'auth_localized_key': {'type': 'str'},
                                                                   'auth_password': {'type': 'str'},
                                                                   'auth_protocol': {'type': 'str'},
-                                                                  'auth_use_plaintext': {'type': 'str'},
+                                                                  'auth_use_plaintext': {'type': 'bool'},
                                                                   'enable_legacy_versions': {'type': 'bool'},
                                                                   'enable_secure_snmp': {'type': 'bool'},
                                                                   'enabled': {'type': 'bool'},

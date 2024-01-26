@@ -9,13 +9,24 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-import json, os
+import json
 
+structure = """{
+  "system": {
+    "hostname": ["system_hostname", "hostname"],
+    "banner": ["system_banner", "banner"],
+    "webui_session_timeout": ["system_webui_session_timeout", "timeout"],
+    "cli_session_timeout": ["system_cli_session_timeout", "timeout"],
+    "system_authorized_keys": ["system_authorized_keys"],
+    "ssh_port": ["system_ssh_port", "port"],
+    "timezone": ["system_timezone", "timezone"],
+    "time": ["time", "time"],
+    "admin_info": ["system_admin_info"]
+  }
+}"""
 
 def get_restapi_body_structure():
-    with open(os.path.dirname(__file__) + '/structure.json') as file:
-        return json.load(file)
-
+    return json.loads(structure)
 
 def command_builder(data, path, instance_id=None, delete_exceptions=None, method=None):
     """
