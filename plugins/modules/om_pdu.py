@@ -22,9 +22,6 @@
 #
 #############################################
 
-"""
-The module file for om_pdu
-"""
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -39,9 +36,12 @@ DOCUMENTATION = """
 ---
 module: om_users
 version_added: 1.0.0
-short_description: 'Manages pdu attributes of opengear om pdu'
-description: 'Manages pdu attributes of opengear om pdu.'
-author: Adrian Van Katwyk
+short_description: Manages pdu attributes of opengear om pdu
+description: 
+  - Manages pdu attributes of opengear om pdu.
+author: 
+  - "Adrian Van Katwyk (@avankatwyk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
     description: Retrieve and update pdu information
@@ -69,54 +69,75 @@ options:
         suboptions:
           id:
             type: str
+            description: id
           username:
             type: str
+            description: username
           password:
             type: str
+            description: password
           port:
             type: str
+            description: port
       shell:
         description: The serial specific settings for a PDU.
         type: dict
         suboptions:
           id:
             type: str
+            description: id
           username:
             type: str
-          passsword:
+            description: username
+          password:
             type: str
+            description: password
           port:
             type: str
+            description: port
       snmp:
         description: The SNMP configuration to access the PDU.
         type: dict
         suboptions:
           id:
             type: str
+            description: id
           protocol:
             type: str
+            description: tcp of udp
           address:
             type: str
+            description: ip address
           port:
             type: int
+            description: tcp or udp port
           version:
             type: str
+            description: snmp version
           community:
             type: str
+            description: community string
           auth_protocol:
             type: str
+            description: snmpv3 auth protocol
           auth_password:
             type: str
+            description: snmpv3 auth password
           username:
             type: str
+            description: snmp username
           engine_id:
             type: str
+            description: engine id
           privacy_protocol:
             type: str
+            description: snmpv3 privacy protocol
           privacy_password:
             type: str
+            description: snmpv3 privacy password
           security_level:
             type: str
+            description: security level
   state:
     description:
     - The state of the configuration after module completion.

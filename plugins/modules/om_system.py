@@ -22,9 +22,6 @@
 #
 #############################################
 
-"""
-The module file for om_system
-"""
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -39,81 +36,88 @@ DOCUMENTATION = """
 ---
 module: om_system
 version_added: 1.0.0
-short_description: 'Manages system attributes of om system'
-description: 'Manages system attributes of om system.'
-author: Adrian Van Katwyk
+short_description: Manages system attributes of om system
+description: 
+  - Manages system attributes of om system
+author: 
+  - "Adrian Van Katwyk (@avankatwyk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
     description: The provided configuration
     type: dict
-    suboptions:
-      hostname:
-        type: str
-        description: Update the Operations Manager appliance hostname.
-      banner:
-        type: str
-        description: Update the Operations Manager appliance banner text.
-      webui_session_timeout:
-        type: int
-        description: Update the WebUI session timeout (in minutes).
-      cli_session_timeout:
-        type: int
-        description: Update the CLI session timeout (in minutes)
-      system_authorized_keys:
-        type: list
-        description: Add an SSH key for the specified user
-        suboptions:
-          key:
-            type: str
-            description: The SSH key
-          username:
-            type: str
-            description: The user associated with the SSH key
-          id:
-            type: str
-            description: The SSH key id to be deleted.
-        elements: dict
-      ssh_port:
-        type: int
-        description: Update the system SSH port
-      timezone:
-        type: str
-        description: Update the system timezone
-      time:
-        type: str
-        description: Update the Operations Manager current time
-      admin_info:
-        type: dict
-        description: Update the Operations Manager appliance system information
-        suboptions:
-          hostname:
-            type: str
-          contact:
-            type: str
-          location:
-            type: str
-      cell_reliability_test:
-        type: dict
-        description: Update configuration items related to running the cell reliability test. This allows the user to
-        enable and disable the test, change how frequently it executes, configure the URL to use in the test and configure
-        the alert threshold for signal strength.
-        suboptions:
-          enabled:
-            type: bool
-          period:
-            type: int
-          test_url:
-            type: list
-            elements: str
-          signal_strength_threshold:
-            type: dict
-            suboptions:
-              lower:
-                type: int
-              upper:
-                type: int
-      reboot:
-        type: bool
+    admin_info:
+      type: dict
+      description: Update the Operations Manager appliance system information
+      suboptions:
+        hostname:
+          type: str
+          description: hostname or address
+        contact:
+          type: str
+          description: contact info
+        location:
+          type: str
+          description: location
+    banner:
+      type: str
+      description: Update the Operations Manager appliance banner text.
+    webui_session_timeout:
+      type: int
+      description: Update the WebUI session timeout (in minutes).
+    cli_session_timeout:
+      type: int
+      description: Update the CLI session timeout (in minutes)
+    system_authorized_keys:
+      description: Add an SSH key for the specified user
+      elements: dict
+      suboptions:
+        id:
+          type: str
+          description: The SSH key id to be deleted.
+        key:
+          type: str
+          description: The SSH key
+        username:
+          type: str
+          description: The user associated with the SSH key
+    ssh_port:
+      type: int
+      description: Update the system SSH port
+    timezone:
+      type: str
+      description: Update the system timezone
+    time:
+      type: str
+      description: Update the Operations Manager current time
+    cell_reliability_test:
+      type: dict
+      description: Update configuration items related to running the cell reliability test.
+      suboptions:
+        enabled:
+          type: bool
+          description: enabled or disabled
+        period:
+          type: int
+          description: period
+        test_url:
+          type: list
+          elements: str
+          description: test usl
+        signal_strength_threshold:
+          type: dict
+          description: signal threshold
+          suboptions:
+            lower:
+              type: int
+              description: lower threshold
+            upper:
+              type: int
+              description: upper threshold
+    reboot:
+      type: bool
+      description: reboot
+    
   state:
     description:
     - The state of the configuration after module completion.
@@ -125,92 +129,6 @@ options:
     - gathered
     - rendered
     default: merged
-"""
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
 """
 
 

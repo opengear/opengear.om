@@ -22,10 +22,6 @@
 #
 #############################################
 
-"""
-The module file for om_conns
-"""
-
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
@@ -39,9 +35,12 @@ DOCUMENTATION = """
 ---
 module: om_conns
 version_added: 1.0.0
-short_description: 'Manages connection attributes of opengear om conns'
-description: 'Manages connection attributes of opengear om conns.'
-author: Adrian Van Katwyk
+short_description: Manages connection attributes of opengear om conns
+description: 
+  - Manages connection attributes of opengear om conns.
+author: 
+  - "Adrian Van Katwyk (@avankatwyk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
     description: Read and manipulate the network connections on the Operations Manager appliance.
@@ -50,40 +49,57 @@ options:
     suboptions:
       id:
         type: str
+        description: id
       name:
         type: str
+        description: name
       mode:
         type: str
+        description: mode
       physif:
         type: str
+        description: physical interface of conn
       ipv4_static_settings:
         type: dict
+        description: ipv4 static setting
         suboptions:
           netmask:
             type: str
+            description: subnet mask
           address:
             type: str
+            description: ip address
           broadcast:
             type: str
+            description: broadcast address
           gateway:
             type: str
+            description: gateway address
           dns1:
             type: str
+            description: primary dns server
           dns2:
             type: str
+            description: secondary dns server
       ipv6_static_settings:
         type: dict
+        description: ipv6 static settings
         suboptions:
           prefix_length:
             type: str
+            description: prefix length
           address:
             type: str
+            description: ipv6 address
           gateway:
             type: str
+            description: ipv6 gateway address
           dns1:
             type: str
+            description: primary dns server
           dns2:
             type: str
+            description: secondary dns server
   state:
     description:
     - The state of the configuration after module completion.
@@ -96,92 +112,6 @@ options:
     - gathered
     - rendered
     default: merged
-"""
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
 """
 
 

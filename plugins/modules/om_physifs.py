@@ -39,99 +39,140 @@ DOCUMENTATION = """
 ---
 module: om_physifs
 version_added: 1.0.0
-short_description: 'Manages physif attributes of om physifs'
-description: 'Manages physif attributes of om physifs.'
-author: Adrian Van Katwyk
+short_description: Manages physif attributes of om physifs
+description: 
+  - Manages physif attributes of om physifs
+author: 
+  - "Adrian Van Katwyk (@avankatwyk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
-    description: Configuring and viewing physifs information
+    description: Configuring and viewing physical interface information
     type: list
     elements: dict
     suboptions:
       enabled:
         type: bool
+        description: enabled or disabled
       name:
         type: str
+        description: interface name
       id:
         type: str
+        description: id
       mtu:
         type: int
+        description: mtu size
       description:
         type: str
+        description: interface description
       media:
         type: str
+        description: media type
       slaves:
         type: list
+        description: slave interfaces
         elements: str
       bond_setting:
         type: dict
+        description: bond configuration
         suboptions:
           mode:
             type: str
+            description: bond mode
           poll_interval:
             type: int
+            description: poll interval
           primary_slave:
             type: str
+            description: primary slave interface
       bridge_setting:
         type: dict
+        description: bridge configuration
         suboptions:
           stp_enabled:
             type: bool
+            description: stp enabled or disabled on bridge 
           primary_slave:
             type: str
+            description: primary slave interface on bridge
       vlan_setting:
         type: dict
+        description: vlan configuration
         suboptions:
           parent_physif:
             type: str
+            description: parent interface
           vlan_id:
             type: int
+            description: vlan id
       cellular_setting:
         type: dict
+        description: cellular configuration
         suboptions:
           id:
             type: str
+            description: id
           active_sim:
             type: int
+            description: active sim
           sim_failover_policy:
             type: str
+            description: sim failover policy
           sim_failover_disconnect_mode:
             type: str
+            description: sim failover disconnect mode
           sim_failback_policy:
             type: str
+            description: sim failback policy
           sim_failback_disconnect_mode:
             type: str
+            description: sim failback disconnect mode
           sims:
             type: list
+            description: sim
             elements: dict
             suboptions:
               id:
                 type: str
+                description: id
               slot:
                 type: int
+                description: slot
               apn:
                 type: str
+                description: apn
               username:
                 type: str
+                description: username
               password:
                 type: str
+                description: password
               iptype:
                 type: str
+                description: iptype
               failback_delay:
                 type: int
+                description: failback delay
               fail_probe_address:
                 type: str
+                description: probe address
               fail_probe_interval:
                 type: int
+                description: probe interval
               fail_probe_count:
                 type: int
+                description: probe count
               fail_probe_threshold:
                 type: int
+                description: probe threshold
       ethernet_setting:
         type: dict
+        description: ethernet configuration
         suboptions:
           link_speed:
             type: str
+            description: link speed
   state:
     description:
     - The state of the configuration after module completion.

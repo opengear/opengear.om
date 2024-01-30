@@ -22,9 +22,6 @@
 #
 #############################################
 
-"""
-The module file for om_services
-"""
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -39,9 +36,12 @@ DOCUMENTATION = """
 ---
 module: om_services
 version_added: 1.0.0
-short_description: 'Manages services attributes of om services'
-description: 'Manages services attributes of om services.'
-author: Adrian Van Katwyk
+short_description: Manages services attributes of om services
+description: 
+  - Manages services attributes of om services.
+author: 
+  - "Adrian Van Katwyk (@avankatwk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
     description: The provided configuration
@@ -49,138 +49,201 @@ options:
     suboptions:
       https:
         type: dict
+        description: https
         suboptions:
           csr:
             type: dict
+            description: csr
             suboptions:
               common_name:
                 type: str
+                description: common name
               org_unit:
                 type: str
+                description: org unit
               organization:
                 type: str
+                description: org
               locality:
                 type: str
+                description: locale
               state:
                 type: str
+                description: state
               country:
                 type: str
+                description: country
               email:
                 type: str
+                description: email
               key_length:
                 type: str
+                description: key length
               csr:
                 type: str
+                description: csr
               challenge_password:
                 type: str
+                description: challenge password
               private_key:
                 type: string
+                description: private key
           cert:
             type: str
+            description: certificate
       ntp:
         type: dict
+        description: ntp configuraiton
         suboptions:
           enabled:
             type: bool
+            description: ntp enabled or disabled
           servers:
             type: list
+            description: list of servers
             suboptions:
               value:
                 type: str
+                description: hostname or ip of ntp server
       lldp:
         type: dict
+        description: lldp configuration
         suboptions:
           enabled:
             type: bool
+            description: lldp enabled or disabled
           description:
             type: str
+            description: description of lldp service
           platform:
             type: str
+            description: platform using lldp
           physifs:
             type: str
+            description: interfaces using lldp
       snmp_manager:
         type: dict
+        description: snmp manager configuraiton
         suboptions:
           protocol:
             type: str
+            description: snmp protocol tcp or udp
           address:
             type: str
+            description: hostname or address of snmp server
           port:
             type: int
+            description: tcp or udp port
           msg_type:
             type: str
+            description: snmp message type
           version:
             type: str
+            description: snmp version
           community:
             type: str
+            description: community string
           auth_protocol:
             type: str
+            description: snmpv3 auth protocol
           auth_password:
             type: str
+            description: snmpv3 auth password
           username:
             type: str
+            description: snmp user name
           engine_id:
             type: str
+            description: snmp engine id
           privacy_protocol:
             type: str
+            description: snmp privacy protocol
           privacy_password:
             type: str
+            description: snmpv3 privacy password
           security_level:
             type: str
+            description: snmp securit level
       snmpd:
         type: dict
+        description: snmp daemon
         suboptions:
           enabled:
             type: bool
+            description: snmpd enabled or disabled
           port:
             type: int
+            description: tcp or udp port
           protocol:
             type: str
+            description: tcp or udp
           enable_legacy_versions:
             type: bool
+            description: enable legacy versions of snmp
           rocommunity:
             type: str
+            description: read only community
           rwcommunity:
             type: str
+            description: read/write community
           enable_secure_snmp:
             type: bool
+            description: enable secure snmp
           security_level:
             type: str
+            description: snmpd security level
           security_name:
             type: str
+            description: security name
           engine_id:
             type: str
+            description: snmp engine id
           auth_protocol:
             type: str
+            description: snmpv3 auth protocol
           auth_use_plaintext:
             type: str
+            description: snmpv3 use plaintext password
           auth_password:
             type: str
+            description: snmpv3 auth password
           auth_localized_key:
             type: str
+            description: snmp local key
           priv_protocol:
             type: str
+            description: snmpv3 priv protol
           priv_use_plaintext:
             type: bool
+            description: snmp priv use plaintext password
           priv_password:
             type: str
+            description: snmpv3 priv password
           priv_localized_key:
             type: str
+            description: priv localized key
       ssh:
         type: dict
+        description: ssh configuraiton
         suboptions:
           ssh_url_delimiter:
             type: str
+            description: ssh url delimiter
           maxstartups_start:
             type: int
+            description: max startups 
           min_startups_rate:
             type: int
+            description: min startups rate
           maxstartups_full:
             type: int
+            description: max startups full
           unauthenticated_serial_port_access:
             type: bool
+            description: unauth serial port access
       routing:
         type: dict
+        description: routing configuration
         suboptions:
           bgpd:
             description: Configuration for the bgp routing daemon.
@@ -188,78 +251,107 @@ options:
             suboptions:
               enabled:
                 type: bool
+                description: bgpd enabled or disabled
           ospfd:
             description: Configuration for the ospf routing daemon.
             type: dict
             suboptions:
               enabled:
                 type: bool
+                description: ospfd enabled or disabled
           isisd:
             description: Configuration for the isis routing daemon.
             type: dict
             suboptions:
               enabled:
                 type: bool
+                description: isisd enabled or disabled
           ripd:
             description: Configuration for the rip routing daemon.
             type: dict
             suboptions:
               enabled:
                 type: bool
+                description: ripd enabled or disabled
       syslog:
         type: list
+        description: syslog configuration
         elements: dict
         suboptions:
           id:
             type: str
+            description: id
           port:
             type: int
+            description: syslog port
           protocol:
             type: str
+            description: syslog tcp or udp
           address:
             type: str
+            description: syslog server hostname or address
           description:
             type: str
+            description: syslog server description
           port_logging_enabled:
             type: bool
+            description: serial port logging enabled
           min_severity:
             type: str
+            description: min syslog severity
       snmp_alert_managers:
         type: list
+        description: snmp alert manager configuration
         elements: dict
         suboptions:
           id:
             type: str
+            description: id
           multi_field_identifer:
             type: str
+            description: multi field id
           name:
             type: str
+            description: snmp alert manager name
           protocol:
             type: str
+            description: snmp alert manager tcp or udp
           address:
             type: str
+            description: snmp alert manager hostname or address
           port:
             type: int
+            description: tcp or udp port
           msg_type:
             type: str
+            description: message type
           version:
             type: str
+            description: snmp version
           community:
             type: str
+            description: community
           auth_protocol:
             type: str
+            description: snmpv3 auth protocol
           auth_password:
             type: str
+            description: snmpv3 auth password
           username:
             type: str
+            description: username
           engine_id:
             type: str
+            description: engine id
           privacy_protocol:
             type: str
+            description: snmpv3 priv protocol
           privacy_password:
             type: str
+            description: snmpv3 priv password
           security_level:
             type: str
+            description: security level
   state:
     description:
     - The state of the configuration after module completion.
@@ -272,92 +364,6 @@ options:
     - gathered
     - rendered
     default: merged
-"""
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
 """
 
 

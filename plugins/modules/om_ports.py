@@ -22,9 +22,6 @@
 #
 #############################################
 
-"""
-The module file for om_ports
-"""
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -39,9 +36,12 @@ DOCUMENTATION = """
 ---
 module: om_ports
 version_added: 1.0.0
-short_description: 'Manages port attributes of om ports'
-description: 'Manages port attributes of om ports.'
-author: Adrian Van Katwyk
+short_description: Manages port attributes of om ports
+description: 
+  - Manages port attributes of om ports
+author: 
+  - "Adrian Van Katwyk (@avankatwky)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
     description: Configuring and viewing ports information
@@ -50,6 +50,7 @@ options:
       ports:
         type: list
         elements: dict
+        description: ports
         suboptions:
           id:
             description: The ID of the serial port. This ID can be used to fetch individual ports using the /ports/endpoint.
@@ -72,8 +73,10 @@ options:
             elements: dict
             suboptions:
               ipaddress:
+                description: ip address of port
                 type: str
               interface:
+                description: interface
                 type: str
           baudrate:
             description: The communication rate of the port.
@@ -97,41 +100,52 @@ options:
             description: (localConsole mode only) Emits kernel debug messages from the chosen port. Only one instance of this is allowed per device.
             type: bool
           sessions:
+            description: sessions
             type: list
             elements: dict
             suboptions:
               username:
+                description: username 
                 type: str
               client_pid:
+                description: client pid
                 type: int
           power:
+            description: power level
             type: str
       auto_discover:
+        description: auto disc
         type: dict
         suboptions:
           ports:
             type: list
             elements: int
+            description: ports
           schedule:
             type: dict
+            description: schedule
             suboptions:
               enabled:
                 type: bool
+                description: enabled or disabled
               period:
                 type: str
+                description: period
               day_of_month:
                 type: int
+                description: month
               day_of_week:
                 type: int
+                description: week
               hour:
                 type: int
+                description: hour
               minute:
                 type: int
+                description: minute
           start:
             description: Triggers the port Auto-Discovery process if start value is true.
             type: bool
-
-
   state:
     description:
     - The state of the configuration after module completion.
@@ -145,93 +159,6 @@ options:
     - rendered
     default: merged
 """
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
-"""
-
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.opengear.om.plugins.module_utils.network.om.argspec.ports.ports import PortsArgs

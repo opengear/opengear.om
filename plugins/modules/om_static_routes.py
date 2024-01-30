@@ -22,12 +22,9 @@
 #
 #############################################
 
-"""
-The module file for om_static routes
-"""
-
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
+
 
 ANSIBLE_METADATA = {
     'metadata_version': '1.0',
@@ -38,37 +35,36 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = """
 ---
 module: om_static_routes
+short_description: Manages static route attributes of opengear om static_routes.
 version_added: 1.0.0
-short_description: 'Manages static route attributes of opengear om static_routes'
-description: 'Manages static route attributes of opengear om static_routes.'
-author: Adrian Van Katwyk
+description: 
+  - Manages static route attributes of opengear om static_routes.
+author:
+  - "Adrian Van Katwyk (@avankaywk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
     description: Retrieve and update static route information
     type: list
     elements: dict
-    suboptions:
-      id:
-        description: Unique id of item.
-        type: str
-      destination_address:
-        description: The destination network/host that the route provides access to.
-        type: str
-      destination_netmask:
-        description: Netmask for IPv4/IPv6 (CIDR format).
-        type: int
-      gateway_address:
+    id:
+      description: Unique id of item.
+      type: str
+    destination_address:
+      description: The destination network/host that the route provides access to.
+      type: str
+    destination_netmask:
+      description: Netmask for IPv4/IPv6 (CIDR format).
+      type: int
+    gateway_address:
         description: The IPv4/IPv6 address of the router gateway that will route packets to the destination address.
-        If this property is not provided, the interface property must be given.
         type: str
-      interface:
-        description: The network interface to be associated with the route. If this property is not provided,
-        the gateway_address property must be given.
-        type: str
-      metric:
-        description: The route metric, which represents the cost of routing packets via this route. Lower metric routes
-        will be used in preference to higher metric routes.
-        type: int
+    interface:
+      description: The network interface to be associated with the route.
+    metric:
+      description: The route metric, which represents the cost of routing packets via this route. 
+      type: int
+
   state:
     description:
     - The state of the configuration after module completion.
@@ -82,93 +78,6 @@ options:
     - rendered
     default: merged
 """
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
-"""
-
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.opengear.om.plugins.module_utils.network.om.argspec.static_routes.static_routes import StaticRoutesArgs

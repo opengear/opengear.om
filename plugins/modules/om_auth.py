@@ -22,9 +22,6 @@
 #
 #############################################
 
-"""
-The module file for om_auth
-"""
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -39,80 +36,109 @@ DOCUMENTATION = """
 ---
 module: om_auth
 version_added: 1.0.0
-short_description: 'Manages auth attributes of om auth'
-description: 'Manages auth attributes of om auth.'
-author: Adrian Van Katwyk
+short_description: Manages auth attributes of om auth
+description: 
+  - Manages auth attributes of om auth.
+author: 
+  - "Adrian Van Katwyk (@avankatwyk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
-    description: The provided configuration
+    description: auth configuration
     type: dict
     suboptions:
       mode:
         type: str
+        description: auth mode
       policy:
-        description: The auth policy determines whether to always check local credentials after a remote authentication
-        failure or to only check the local credentials if the remote authentication server is unreachable.
+        description: The auth policy determines whether to always check local credentials after a remote authentication failure or to only check the local credentials if the remote authentication server is unreachable.
         type: str
       tacacsMethod:
         type: str
+        description: tacacs method
       tacacsService:
         type: str
+        description: tacacs service
       ldapBaseDN:
         type: str
+        description: ldap base dn
       ldapBindDN:
         type: str
+        description: ldap bind dn
       ldapIgnoreReferals:
         type: bool
+        description: ldap ignore referrals
       ldapUsernameAttribute:
         type: str
+        description: ldap username
       ldapGroupMembershipAttribute:
         type: str
+        description: ldap group member
       radiusAuthenticationServers:
         type: list
+        description: radius auth servers
         elements: dict
         suboptions:
           id:
             type: str
+            description: id
           hostname:
             type: str
+            description: hostname or address
           port:
             type: int
+            description: radius port
       radiusAccountingServers:
         type: list
+        description: radius accounting server
         elements: dict
         suboptions:
           id:
             type: str
+            description: id
           hostname:
             type: str
+            description: hostname or address
           port:
             type: int
+            description: port
       tacacsAuthenticationServers:
         type: list
+        description: tacacs auth server
         elements: dict
         suboptions:
           id:
             type: str
+            description: id
           hostname:
             type: str
+            description: hostname or address
           port:
             type: int
+            description: port
       ldapAuthenticationServers:
         type: list
+        description: ldap auth server
         elements: dict
         suboptions:
           id:
             type: str
+            description: id
           hostname:
             type: str
+            description: hostname or address
           port:
             type: int
+            description: port
       radiusPassword:
         type: str
+        description: radius password
       tacacsPassword:
         type: str
+        description: tacacs password
       ldapBindPassword:
         type: str
+        description: ldap bind password
   state:
     description:
     - The state of the configuration after module completion.
@@ -124,92 +150,6 @@ options:
     - gathered
     - rendered
     default: merged
-"""
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
 """
 
 

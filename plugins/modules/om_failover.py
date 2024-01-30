@@ -22,9 +22,6 @@
 #
 #############################################
 
-"""
-The module file for om_failover
-"""
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
@@ -39,23 +36,26 @@ DOCUMENTATION = """
 ---
 module: om_failover
 version_added: 1.0.0
-short_description: 'Manages failover attributes of om failover'
-description: 'Manages failover attributes of om failover.'
-author: Adrian Van Katwyk
+short_description: Manages failover attributes of om failover
+description: 
+  - Manages failover attributes of om failover
+author:
+  - "Adrian Van Katwyk (@avankaywk)"
+  - "Matt Witmer (@mattwit)"
 options:
   config:
-    description: The provided configuration
+    description: failover configuration
     type: dict
-    suboptions:
-      enabled:
-        type: bool
-      probe_physif:
-        description: A Failover event occurs if the probe_address is not reachable on this network interface.
-        type: str
-      probe_address:
-        description: Probe address can be an IPv4 address, IPv6 address or a hostname. Be aware that hostnames may not
-        resolve during Failover depending on DNS settings.
-        type: str
+    enabled:
+      type: bool
+      description: failover enabled or disabled
+    probe_physif:
+      description: A Failover event occurs if the probe_address is not reachable on this network interface.
+      type: str
+    probe_address:
+      description: Probe address can be an IPv4 address, IPv6 address or a hostname. Be aware that hostnames may not resolve during Failover depending on DNS settings.
+      type: str
+
   state:
     description:
     - The state of the configuration after module completion.
@@ -67,92 +67,6 @@ options:
     - gathered
     - rendered
     default: merged
-"""
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
 """
 
 
