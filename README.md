@@ -43,6 +43,11 @@ You can also include it in a `requirements.yml` file and install it with `ansibl
 collections:
   - name: opengear.om
 ```
+
+Alternatively you can install the Opengear OM collection directly from Github:
+
+    ansible-galaxy collection install git+https://github.com/opengear/opengear.om.git
+
 ## Using this collection
 
 
