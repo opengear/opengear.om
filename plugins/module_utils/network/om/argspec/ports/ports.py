@@ -64,8 +64,10 @@ class PortsArgs(object):  # pylint: disable=R0903
                                                                   'label': {'type': 'str'},
                                                                   'logging_level': {'type': 'str'},
                                                                   'mode': {'type': 'str'},
+                                                                  'name': {'type': 'str'},
                                                                   'parity': {'type': 'str'},
                                                                   'pinout': {'type': 'str'},
+                                                                  'portnum': {'type': 'str'},
                                                                   'power': {'type': 'str'},
                                                                   'sessions': {'elements': 'dict',
                                                                                'options': {
