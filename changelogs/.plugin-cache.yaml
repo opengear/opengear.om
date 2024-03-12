@@ -1,0 +1,83 @@
+objects:
+  role: {}
+plugins:
+  become: {}
+  cache: {}
+  callback: {}
+  cliconf: {}
+  connection: {}
+  filter: {}
+  httpapi:
+    om:
+      description: HttpApi Plugin for Opengear OM & CM8100 devices
+      name: om
+      version_added: 1.0.2
+  inventory: {}
+  lookup: {}
+  module:
+    om_auth:
+      description: Manages auth attributes of om auth
+      name: om_auth
+      namespace: ''
+      version_added: 1.0.0
+    om_conns:
+      description: Manages connection attributes of opengear om conns
+      name: om_conns
+      namespace: ''
+      version_added: 1.0.0
+    om_facts:
+      description: Get facts about om devices.
+      name: om_facts
+      namespace: ''
+      version_added: 1.0.0
+    om_failover:
+      description: Manages failover attributes of om failover
+      name: om_failover
+      namespace: ''
+      version_added: 1.0.0
+    om_groups:
+      description: Manages user attributes of opengear om groups
+      name: om_groups
+      namespace: ''
+      version_added: 1.0.0
+    om_pdu:
+      description: Manages pdu attributes of opengear om pdu
+      name: om_pdu
+      namespace: ''
+      version_added: 1.0.0
+    om_physifs:
+      description: Manages physif attributes of om physifs
+      name: om_physifs
+      namespace: ''
+      version_added: 1.0.0
+    om_ports:
+      description: Manages port attributes of om ports
+      name: om_ports
+      namespace: ''
+      version_added: 1.0.0
+    om_services:
+      description: Manages services attributes of om services
+      name: om_services
+      namespace: ''
+      version_added: 1.0.0
+    om_static_routes:
+      description: Manages static route attributes of opengear om static_routes.
+      name: om_static_routes
+      namespace: ''
+      version_added: 1.0.0
+    om_system:
+      description: Manages system attributes of om system
+      name: om_system
+      namespace: ''
+      version_added: 1.0.0
+    om_users:
+      description: Manages user attributes of opengear om users
+      name: om_users
+      namespace: ''
+      version_added: 1.0.0
+  netconf: {}
+  shell: {}
+  strategy: {}
+  test: {}
+  vars: {}
+version: 1.0.2
