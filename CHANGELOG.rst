@@ -5,6 +5,9 @@ Opengear.Om Release Notes
 .. contents:: Topics
 
 
+v1.0.4
+======
+
 v1.0.3
 ======
 
