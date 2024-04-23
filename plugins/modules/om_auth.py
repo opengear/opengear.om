@@ -22,7 +22,6 @@
 #
 #############################################
 
-
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
@@ -37,9 +36,9 @@ DOCUMENTATION = """
 module: om_auth
 version_added: 1.0.0
 short_description: Manages auth attributes of om auth
-description: 
+description:
   - Manages auth attributes of om auth.
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwyk)"
   - "Matt Witmer (@mattwit)"
 options:
@@ -51,7 +50,7 @@ options:
         type: str
         description: auth mode
       policy:
-        description: The auth policy determines whether to always check local credentials after a remote authentication failure or to only check the local credentials if the remote authentication server is unreachable.
+        description: Checks auth
         type: str
       tacacsMethod:
         type: str

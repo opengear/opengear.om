@@ -37,7 +37,7 @@ DOCUMENTATION = """
 module: om_failover
 version_added: 1.0.0
 short_description: Manages failover attributes of om failover
-description: 
+description:
   - Manages failover attributes of om failover
 author:
   - "Adrian Van Katwyk (@avankaywk)"
@@ -53,7 +53,7 @@ options:
       description: A Failover event occurs if the probe_address is not reachable on this network interface.
       type: str
     probe_address:
-      description: Probe address can be an IPv4 address, IPv6 address or a hostname. Be aware that hostnames may not resolve during Failover depending on DNS settings.
+      description: Probe address can be an IPv4/6 address or hostname
       type: str
 
   state:

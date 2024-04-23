@@ -1,10 +1,9 @@
 ---
 
-- hosts: ngcsdevices
-  collections:
-    - opengear_om
+- name: Configure serial ports
+  hosts: all
   connection: httpapi
-  gather_facts: yes
+  gather_facts: true
   tasks:
     - name: Get port info
       opengear.om.om_facts:
@@ -14,16 +13,16 @@
       opengear.om.om_ports:
         config:
           ports:
-          - id: "{{ item.id }}"
-            parity: none
-            label: "{{ item.id }}"
-            stopbits: 1
-            pinout: X2
-            baudrate: 9600
-            mode: disabled
-            logging_level: disabled
-            databits: 8
-            escape_char: '~'
+            - id: "{{ item.id }}"
+              parity: none
+              label: "{{ item.id }}"
+              stopbits: 1
+              pinout: X2
+              baudrate: 9600
+              mode: disabled
+              logging_level: disabled
+              databits: 8
+              escape_char: '~'
         state:
           overridden
       loop: "{{ ansible_facts['network_resources']['ports']['ports'] }}"

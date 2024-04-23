@@ -38,9 +38,9 @@ DOCUMENTATION = """
 module: om_groups
 version_added: 1.0.0
 short_description: Manages user attributes of opengear om groups
-description: 
+description:
   - Manages user attributes of opengear om groups
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwyk)"
   - "Matt Witmer (@mattwit)"
 options:
@@ -83,7 +83,6 @@ options:
     - gathered
     - rendered
     default: merged
- 
 """
 
 from ansible.module_utils.basic import AnsibleModule

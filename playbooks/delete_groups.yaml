@@ -1,15 +1,14 @@
 ---
 
-- hosts: ngcsdevices
-  collections:
-    - opengear_om
+- name: Delete user groups
+  hosts: all
   connection: httpapi
   gather_facts: false
   tasks:
     - name: Delete groups
       opengear.om.om_groups:
         config:
-        - groupname: test5
-        - groupname: test4
+          - groupname: test5
+          - groupname: test4
         state:
           deleted

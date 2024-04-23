@@ -34,8 +34,8 @@ class TestOmUsersModule(TestOmModule):
 
     module = om_users
 
-    def setUp(self):
-        super(TestOmUsersModule, self).setUp()
+    def set_up(self):
+        super(TestOmUsersModule, self).set_up()
 
         self.mock_get_device_data = patch(
             "ansible_collections.opengear.om.plugins.module_utils.network.om."
@@ -44,14 +44,15 @@ class TestOmUsersModule(TestOmModule):
         self.get_device_data = self.mock_get_device_data.start()
 
         self.mock_get_resource_connection_config = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.cfg.base.get_resource_connection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils."
+            "network.common.cfg.base.get_resource_connection"
         )
         self.get_resource_connection_config = (
             self.mock_get_resource_connection_config.start()
         )
-
         self.mock_get_resource_connection_facts = patch(
-            "ansible_collections.ansible.netcommon.plugins.module_utils.network.common.facts.facts.get_resource_connection"
+            "ansible_collections.ansible.netcommon.plugins.module_utils."
+            "network.common.facts.facts.get_resource_connection"
         )
         self.get_resource_connection_facts = (
             self.mock_get_resource_connection_facts.start()
@@ -70,172 +71,305 @@ class TestOmUsersModule(TestOmModule):
         self.get_device_data.side_effect = load_from_file
 
     def test_om_users_merged(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(id="users-1", username="user1-modified", description="This user was changed", enabled=False, no_password=True, groups=["g2"]),
-                    dict(username="user3", description="This user was added", enabled=True, no_password=True, groups=["g1"])
-                ],
-                state="merged",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'id': 'users-1',
+                    'username': 'user1-modified',
+                    'description': 'This user was changed',
+                    'enabled': False,
+                    'no_password': True,
+                    'groups': ['g2']
+                },
+                {
+                    'username': 'user3',
+                    'description': 'This user was added',
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ['g1']
+                }
+            ],
+            'state': 'merged',
+        })
 
         commands = [
-            dict(path='users/users-1',
-                data=dict(user=dict(username="user1-modified", description="This user was changed", enabled=False,
-                            no_password=True, ssh_password_enabled=True, password=None,
-                            hashed_password="$5$vqpQsIj./5/2OOBo$tTUYAJaEqbZYf4aipKicPF5bpkkGSEqtBy3t4dylp0/",
-                            groups=["g2", "g1"])),
-                    method='PUT'),
-            dict(path='users/',
-                data=dict(user=dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                            groups=["g1"])),
-                method='POST')]
+            {
+                'path': 'users/users-1',
+                'data': {
+                    'user': {
+                        'username': 'user1-modified',
+                        'description': 'This user was changed',
+                        'enabled': False,
+                        'no_password': True,
+                        'ssh_password_enabled': True,
+                        'password': None,
+                        'hashed_password': (
+                            "{{ 'hash' }}"
+                        ),
+                        'groups': ['g2', 'g1']
+                    }
+                },
+                'method': 'PUT'
+            },
+            {
+                'path': 'users/',
+                'data': {
+                    'user': {
+                        'username': 'user3',
+                        'description': 'This user was added',
+                        'enabled': True,
+                        'no_password': True,
+                        'groups': ['g1']
+                    }
+                },
+                'method': 'POST'
+            }
+        ]
         self.execute_module(changed=True, commands=commands)
 
     def test_om_users_merged_idempotent(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(username="user1", enabled=True, hashed_password="$5$vqpQsIj./5/2OOBo$tTUYAJaEqbZYf4aipKicPF5bpkkGSEqtBy3t4dylp0/", groups=["g1"]),
-                    dict(username="user2", enabled=True, no_password=True, groups=["g1"])
-                ],
-                state="merged",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'username': "user1",
+                    'enabled': True,
+                    'hashed_password': (
+                        "{{ 'hash' }}"
+                    ),
+                    'groups': ["g1"]
+                },
+                {
+                    'username': "user2",
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ["g1"]
+                }
+            ],
+            'state': "merged",
+        })
 
         commands = []
         self.execute_module(changed=False, commands=commands)
 
     def test_om_users_replaced(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(id="users-1", username="user1-modified", description="This user was changed", enabled=False,
-                         no_password=True, groups=["g2"]),
-                    dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                         groups=["g1"])
-                ],
-                state="replaced",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'id': "users-1",
+                    'username': "user1-modified",
+                    'description': "This user was changed",
+                    'enabled': False,
+                    'no_password': True,
+                    'groups': ["g2"]
+                },
+                {
+                    'username': "user3",
+                    'description': "This user was added",
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ["g1"]
+                }
+            ],
+            'state': "replaced",
+        })
 
         commands = [
-            dict(path='users/users-1',
-                 data=dict(user=dict(username="user1-modified", description="This user was changed", enabled=False,
-                                     no_password=True, groups=["g2"])),
-                 method='PUT'),
-            dict(path='users/',
-                 data=dict(
-                     user=dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                               groups=["g1"])),
-                 method='POST')]
+            {
+                'path': 'users/users-1',
+                'data': {
+                    'user': {
+                        'username': "user1-modified",
+                        'description': "This user was changed",
+                        'enabled': False,
+                        'no_password': True,
+                        'groups': ["g2"]
+                    }
+                },
+                'method': 'PUT'
+            },
+            {
+                'path': 'users/',
+                'data': {
+                    'user': {
+                        'username': "user3",
+                        'description': "This user was added",
+                        'enabled': True,
+                        'no_password': True,
+                        'groups': ["g1"]
+                    }
+                },
+                'method': 'POST'
+            }
+        ]
         self.execute_module(changed=True, commands=commands)
 
     def test_om_users_replaced_idempotent(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(username="user1", enabled=True,
-                         hashed_password="$5$vqpQsIj./5/2OOBo$tTUYAJaEqbZYf4aipKicPF5bpkkGSEqtBy3t4dylp0/",
-                         groups=["g1"]),
-                    dict(username="user2", enabled=True, no_password=True, groups=["g1"])
-                ],
-                state="replaced",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'username': "user1",
+                    'enabled': True,
+                    'hashed_password': (
+                        "{{ 'hash' }}"
+                    ),
+                    'groups': ["g1"]
+                },
+                {
+                    'username': "user2",
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ["g1"]
+                }
+            ],
+            'state': "replaced",
+        })
 
         commands = []
         self.execute_module(changed=False, commands=commands)
 
     def test_om_users_overridden(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(id="users-1", username="user1-modified", description="This user was changed", enabled=False,
-                         no_password=True, groups=["g2"]),
-                    dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                         groups=["g1"])
-                ],
-                state="overridden",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'id': "users-1",
+                    'username': "user1-modified",
+                    'description': "This user was changed",
+                    'enabled': False,
+                    'no_password': True,
+                    'groups': ["g2"]
+                },
+                {
+                    'username': "user3",
+                    'description': "This user was added",
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ["g1"]
+                }
+            ],
+            'state': "overridden",
+        })
 
         commands = [
-            dict(path='users/users-2', data=None, method='DELETE'),
-            dict(path='users/users-1',
-                 data=dict(user=dict(username="user1-modified", description="This user was changed", enabled=False,
-                                     no_password=True, groups=["g2"])),
-                 method='PUT'),
-            dict(path='users/',
-                 data=dict(
-                     user=dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                               groups=["g1"])),
-                 method='POST')]
+            {'path': 'users/users-2', 'data': None, 'method': 'DELETE'},
+            {
+                'path': 'users/users-1',
+                'data': {
+                    'user': {
+                        'username': "user1-modified",
+                        'description': "This user was changed",
+                        'enabled': False,
+                        'no_password': True,
+                        'groups': ["g2"]
+                    }
+                },
+                'method': 'PUT'
+            },
+            {
+                'path': 'users/',
+                'data': {
+                    'user': {
+                        'username': "user3",
+                        'description': "This user was added",
+                        'enabled': True,
+                        'no_password': True,
+                        'groups': ["g1"]
+                    }
+                },
+                'method': 'POST'
+            }
+        ]
         self.execute_module(changed=True, commands=commands)
 
     def test_om_users_overridden_idempotent(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(username="user1", enabled=True,
-                         hashed_password="$5$vqpQsIj./5/2OOBo$tTUYAJaEqbZYf4aipKicPF5bpkkGSEqtBy3t4dylp0/",
-                         groups=["g1"]),
-                    dict(username="user2", enabled=True, no_password=True, groups=["g1"])
-                ],
-                state="overridden",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'username': "user1",
+                    'enabled': True,
+                    'hashed_password': (
+                        "{{ 'hash' }}"
+                    ),
+                    'groups': ["g1"]
+                },
+                {
+                    'username': "user2",
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ["g1"]
+                }
+            ],
+            'state': "overridden",
+        })
 
         commands = []
         self.execute_module(changed=False, commands=commands)
 
     def test_om_users_deleted(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(id="users-1"),
-                    dict(username="user2"),
-                    dict(username="user3")
-                ],
-                state="deleted",
-            )
-        )
+        set_module_args({
+            'config': [
+                {'id': "users-1"},
+                {'username': "user2"},
+                {'username': "user3"}
+            ],
+            'state': "deleted",
+        })
 
         commands = [
-            dict(path='users/users-2', data=None, method='DELETE')
+            {
+                'path': 'users/users-2',
+                'data': None,
+                'method': 'DELETE'
+            }
         ]
+
         self.execute_module(changed=True, commands=commands)
 
     def test_om_users_rendered(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(id="users-1", username="user1-modified", description="This user was changed", enabled=False,
-                         no_password=True, groups=["g2"]),
-                    dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                         groups=["g1"])
-                ],
-                state="rendered",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'id': "users-1",
+                    'username': "user1-modified",
+                    'description': "This user was changed",
+                    'enabled': False,
+                    'no_password': True,
+                    'groups': ["g2"]
+                },
+                {
+                    'username': "user3",
+                    'description': "This user was added",
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ["g1"]
+                }
+            ],
+            'state': "rendered",
+        })
 
         commands = []
-
         self.execute_module(changed=False, commands=commands)
 
     def test_om_users_gathered(self):
-        set_module_args(
-            dict(
-                config=[
-                    dict(id="users-1", username="user1-modified", description="This user was changed", enabled=False,
-                         no_password=True, groups=["g2"]),
-                    dict(username="user3", description="This user was added", enabled=True, no_password=True,
-                         groups=["g1"])
-                ],
-                state="gathered",
-            )
-        )
+        set_module_args({
+            'config': [
+                {
+                    'id': "users-1",
+                    'username': "user1-modified",
+                    'description': "This user was changed",
+                    'enabled': False,
+                    'no_password': True,
+                    'groups': ["g2"]
+                },
+                {
+                    'username': "user3",
+                    'description': "This user was added",
+                    'enabled': True,
+                    'no_password': True,
+                    'groups': ["g1"]
+                }
+            ],
+            'state': "gathered",
+        })
 
         commands = []
 

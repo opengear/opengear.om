@@ -25,8 +25,10 @@ structure = """{
   }
 }"""
 
+
 def get_restapi_body_structure():
     return json.loads(structure)
+
 
 def command_builder(data, path, instance_id=None, delete_exceptions=None, method=None):
     """

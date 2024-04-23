@@ -27,8 +27,8 @@ __metaclass__ = type
 # One unittest needs to import builtins via __import__() so we need to have
 # the string that represents it
 try:
-    import __builtin__
+    import __builtin__ as builtins_module
 except ImportError:
-    BUILTINS = "builtins"
-else:
-    BUILTINS = "__builtin__"
+    import builtins as builtins_module
+
+BUILTINS = builtins_module.__name__

@@ -20,8 +20,8 @@ module: om_facts
 version_added: 1.0.0
 short_description: Get facts about om devices.
 description:
-  - Collects facts from network devices running the om operating system. 
-author: 
+  - Collects facts from network devices running the om operating system.
+author:
   - "Ansible Network Engineer"
 options:
   gather_subset:

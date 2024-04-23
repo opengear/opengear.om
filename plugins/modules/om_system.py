@@ -37,9 +37,9 @@ DOCUMENTATION = """
 module: om_system
 version_added: 1.0.0
 short_description: Manages system attributes of om system
-description: 
+description:
   - Manages system attributes of om system
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwyk)"
   - "Matt Witmer (@mattwit)"
 options:
@@ -117,7 +117,6 @@ options:
     reboot:
       type: bool
       description: reboot
-    
   state:
     description:
     - The state of the configuration after module completion.

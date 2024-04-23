@@ -37,9 +37,9 @@ DOCUMENTATION = """
 module: om_services
 version_added: 1.0.0
 short_description: Manages services attributes of om services
-description: 
+description:
   - Manages services attributes of om services.
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwk)"
   - "Matt Witmer (@mattwit)"
 options:
@@ -231,7 +231,7 @@ options:
             description: ssh url delimiter
           maxstartups_start:
             type: int
-            description: max startups 
+            description: max startups
           min_startups_rate:
             type: int
             description: min startups rate

@@ -37,7 +37,7 @@ DOCUMENTATION = """
 module: om_static_routes
 short_description: Manages static route attributes of opengear om static_routes.
 version_added: 1.0.0
-description: 
+description:
   - Manages static route attributes of opengear om static_routes.
 author:
   - "Adrian Van Katwyk (@avankaywk)"
@@ -62,7 +62,7 @@ options:
     interface:
       description: The network interface to be associated with the route.
     metric:
-      description: The route metric, which represents the cost of routing packets via this route. 
+      description: The route metric, which represents the cost of routing packets via this route.
       type: int
 
   state:

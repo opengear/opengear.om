@@ -37,9 +37,9 @@ DOCUMENTATION = """
 module: om_users
 version_added: 1.0.0
 short_description: Manages user attributes of opengear om users
-description: 
+description:
   - Manages user attributes of opengear om users
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwky)"
 options:
   config:

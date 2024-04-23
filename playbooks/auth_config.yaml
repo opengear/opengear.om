@@ -1,13 +1,11 @@
 ---
 
-- hosts: ngcsdevices
-  collections:
-    - opengear_om
+- name: Configure Auth Config
+  hosts: all
   connection: httpapi
   tasks:
     - name: Change Auth
       opengear.om.om_auth:
         config:
           mode: local
-        state:
-          merged
+        state: merged

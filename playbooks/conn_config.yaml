@@ -1,42 +1,41 @@
 ---
 
-- hosts: ROUTERS
-  collections:
-    - opengear_om
+- name: Configure Conns
+  hosts: all
   connection: httpapi
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Add conn
       opengear.om.om_conns:
         config:
-        - name: default-conn-1
-          mode: static
-          physif: system_net_physifs-1
-          ipv4_static_settings:
-            netmask: 255.255.255.0
-            address: 192.168.0.1
-        - name: default-conn-2
-          mode: dhcp
-          physif: system_net_physifs-1
-        - name: v6-dyn-n1-conn
-          mode: ipv6_automatic
-          physif: system_net_physifs-1
-        - name: v4-dyn-n2-conn
-          mode: dhcp
-          physif: system_net_physifs-2
-        - name: v6-dyn-n2-conn
-          physif: system_net_physifs-2
-          mode: ipv6_automatic
-        - name: conn-6
-          mode: static
-          physif: system_net_physifs-1
-          ipv4_static_settings:
-            netmask: 255.255.255.0
-            address: 192.168.0.21
-        - mode: static
-          physif: system_net_physifs-1
-          ipv4_static_settings:
-            netmask: 255.255.255.0
-            address: 192.168.0.20
+          - name: default-conn-1
+            mode: static
+            physif: system_net_physifs-1
+            ipv4_static_settings:
+              netmask: 255.255.255.0
+              address: 192.168.0.1
+          - name: default-conn-2
+            mode: dhcp
+            physif: system_net_physifs-1
+          - name: v6-dyn-n1-conn
+            mode: ipv6_automatic
+            physif: system_net_physifs-1
+          - name: v4-dyn-n2-conn
+            mode: dhcp
+            physif: system_net_physifs-2
+          - name: v6-dyn-n2-conn
+            physif: system_net_physifs-2
+            mode: ipv6_automatic
+          - name: conn-6
+            mode: static
+            physif: system_net_physifs-1
+            ipv4_static_settings:
+              netmask: 255.255.255.0
+              address: 192.168.0.21
+          - mode: static
+            physif: system_net_physifs-1
+            ipv4_static_settings:
+              netmask: 255.255.255.0
+              address: 192.168.0.20
         state:
           overridden

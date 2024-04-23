@@ -1,28 +1,25 @@
 ---
 
-- hosts: ROUTERS
-  collections:
-    - opengear_om
+- name: System configuration
+  hosts: all
   connection: httpapi
   tasks:
     - name: Change Admin Infro
       opengear.om.om_system:
-        config:  
+        config:
           admin_info:
             hostname: om1000
             contact: avankatw@digi.com.au
             location: AUS
-    
     - name: Change Timezone
       opengear.om.om_system:
         config:
           timezone: Australia/Brisbane
-    
     - name: Add SSH Keys
       opengear.om.om_system:
         config:
           system_authorized_keys:
-            - key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDTRO6c/1JnaA/Mi3MKONqQJUe75rZC36Z0tH+BefpR2li3F/x7TWQnW0aBSA4y7bGOxS5B+nFd86m6+QWqZMxqIpraG11KKVh2c+ElIliVvPbpN7cL9QKbzDZPCn5TZ28znHDuUSzc7Kt0+33On+7HkMhapKiXkA2ardK89DlpKbE4mSiIZoWG0zepyWsXa86fiKTORqEN8FhRtxnBMcl+WODjQfuBzPNr/zYv75eLaZ0LwUOz6/xm8RkwEhd/kF1ntrXYrwOqhFsR7g0cfqQ5T9vLcUXqe+VDvD16KBkooSL92OTxC907F7HPk7XvQaY4bEWK7ca/vbVhsVzdDhbF test
+            - key: "{{ 'rsa key' }}"
               username: root
               id: users_ssh_authorized_keys-1
         state:

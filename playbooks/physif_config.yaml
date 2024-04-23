@@ -1,32 +1,31 @@
 ---
 
-- hosts: ngcsdevices
-  collections:
-    - opengear_om
+- name: Configure physif
+  hosts: all
   connection: httpapi
   tasks:
     - name: Add physif
       opengear.om.om_physifs:
         config:
-        - name: init_net1
-          enabled: yes
-          mtu: 1500
-          description: NET1 - 1G Copper/SFP
-          media: ethernet
-          ethernet_setting:
-            link_speed: auto
-        - name: init_net2
-          enabled: yes
-          mtu: 1500
-          description: NET2 - 1G Copper/SFP
-          media: ethernet
-          ethernet_setting:
-            link_speed: auto
-        - enabled: true
-          mtu: 1500
-          description: A new physif.
-          media: bond
-          slaves:
-          - net1
+          - name: init_net1
+            enabled: true
+            mtu: 1500
+            description: NET1 - 1G Copper/SFP
+            media: ethernet
+            ethernet_setting:
+              link_speed: auto
+          - name: init_net2
+            enabled: true
+            mtu: 1500
+            description: NET2 - 1G Copper/SFP
+            media: ethernet
+            ethernet_setting:
+              link_speed: auto
+          - enabled: true
+            mtu: 1500
+            description: A new physif.
+            media: bond
+            slaves:
+              - net1
         state:
           overridden

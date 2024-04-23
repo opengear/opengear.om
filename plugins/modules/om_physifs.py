@@ -40,9 +40,9 @@ DOCUMENTATION = """
 module: om_physifs
 version_added: 1.0.0
 short_description: Manages physif attributes of om physifs
-description: 
+description:
   - Manages physif attributes of om physifs
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwyk)"
   - "Matt Witmer (@mattwit)"
 options:
@@ -92,7 +92,7 @@ options:
         suboptions:
           stp_enabled:
             type: bool
-            description: stp enabled or disabled on bridge 
+            description: stp enabled or disabled on bridge
           primary_slave:
             type: str
             description: primary slave interface on bridge
@@ -186,93 +186,6 @@ options:
     - rendered
     default: merged
 """
-EXAMPLES = """
-# Using deleted
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    operation: deleted
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using merged
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: merged
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using overridden
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  myos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: overridden
-
-<placeholder for the configuration example after module invocation>
-
-
-# Using replaced
-
-<placeholder for the configuration example prior to module invocation>
-
-- name: Configure interfaces
-  nxos_interfaces:
-    config:
-      - name: Ethernet1/1
-        description: 'Configured by Ansible'
-        enable: True
-      - name: Ethernet1/2
-        description: 'Configured by Ansible'
-        enable: False
-    operation: replaced
-
-<placeholder for the configuration example after module invocation>
-
-
-"""
-RETURN = """
-before:
-  description: The configuration prior to the model invocation.
-  returned: always
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-after:
-  description: The resulting configuration model invocation.
-  returned: when changed
-  sample: >
-    The configuration returned will always be in the same format
-     of the parameters above.
-commands:
-  description: The set of commands pushed to the remote device.
-  returned: always
-  type: list
-  sample: ['command 1', 'command 2', 'command 3']
-"""
-
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.opengear.om.plugins.module_utils.network.om.argspec.physifs.physifs import PhysifsArgs

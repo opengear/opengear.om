@@ -36,9 +36,9 @@ DOCUMENTATION = """
 module: om_conns
 version_added: 1.0.0
 short_description: Manages connection attributes of opengear om conns
-description: 
+description:
   - Manages connection attributes of opengear om conns.
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwyk)"
   - "Matt Witmer (@mattwit)"
 options:

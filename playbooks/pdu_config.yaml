@@ -1,21 +1,20 @@
 ---
 
-- hosts: ngcsdevices
-  collections:
-    - opengear_om
+- name: Configure PDU
+  hosts: all
   connection: httpapi
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Add static routes
       opengear.om.om_static_routes:
         config:
-        - destination_address: 192.168.10.16
-          destination_netmask: 3
-          gateway_address: 192.168.0.1
-          metric: 4
-        - destination_address: 192.168.10.14
-          destination_netmask: 4
-          gateway_address: 192.168.0.1
-          metric: 4
+          - destination_address: 192.168.10.16
+            destination_netmask: 3
+            gateway_address: 192.168.0.1
+            metric: 4
+          - destination_address: 192.168.10.14
+            destination_netmask: 4
+            gateway_address: 192.168.0.1
+            metric: 4
         state:
           overridden

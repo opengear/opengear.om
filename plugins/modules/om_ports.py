@@ -37,9 +37,9 @@ DOCUMENTATION = """
 module: om_ports
 version_added: 1.0.0
 short_description: Manages port attributes of om ports
-description: 
+description:
   - Manages port attributes of om ports
-author: 
+author:
   - "Adrian Van Katwyk (@avankatwky)"
   - "Matt Witmer (@mattwit)"
 options:
@@ -105,7 +105,7 @@ options:
             elements: dict
             suboptions:
               username:
-                description: username 
+                description: username
                 type: str
               client_pid:
                 description: client pid
