@@ -3,7 +3,9 @@ releases:
   1.0.2:
     plugins:
       httpapi:
-        - description: HttpApi Plugin for Opengear OM & CM8100 devices
-          name: om
-          namespace: null
+      - description: HttpApi Plugin for Opengear OM & CM8100 devices
+        name: om
+        namespace: null
     release_date: '2024-03-12'
+  1.0.3:
+    release_date: '2024-04-22'
