@@ -11,3 +11,8 @@ releases:
     release_date: '2024-04-22'
   1.0.4:
     release_date: '2024-04-22'
+  1.0.5:
+    changes:
+      bugfixes:
+        - Fixed issue with missing argspec items config.ports.available_baudrates, config.ports.raw_tcp, config.ports.single_session.
+    release_date: '2024-08-27'
