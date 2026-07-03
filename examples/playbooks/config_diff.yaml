@@ -1,0 +1,42 @@
+---
+# Generate a diff between configuration file and current device configuration
+# using the config_diff module via SSH connection.
+# The configuration file must be in dotnotation format from config_export.
+- name: Demonstrate config diff module
+  hosts: opengear
+  gather_facts: false
+
+  tasks:
+    # Assume config_export performed, the config on the device has been modified
+    - name: Diff modified configuration against device
+      opengear.ng.config_diff:
+        config_content: "{{ lookup('file', backup_path + '/config-backup-' + inventory_hostname + '.cfg') }}"
+      vars:
+        ansible_connection: ssh
+      register: diff_result
+
+    - name: No differences found
+      ansible.builtin.debug:
+        msg: "Configuration matches device — no differences found."
+      when: not diff_result.changed
+
+    - name: Save diff to file
+      ansible.builtin.copy:
+        content: "{{ diff_result.diff.prepared }}"
+        dest: "{{ backup_path }}/config-diff-{{ inventory_hostname }}.txt"
+        mode: '0644'
+      delegate_to: localhost
+      when: diff_result.changed
+
+    - name: Show diff
+      ansible.builtin.command:
+        cmd: "cat {{ backup_path }}/config-diff-{{ inventory_hostname }}.txt"
+      delegate_to: localhost
+      when: diff_result.changed
+      register: cat_result
+      changed_when: false
+
+    - name: Print diff
+      ansible.builtin.debug:
+        msg: "{{ cat_result.stdout_lines }}"
+      when: diff_result.changed
