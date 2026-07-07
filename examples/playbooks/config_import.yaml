@@ -1,0 +1,25 @@
+---
+# Import device configuration from a previously exported file.
+#
+# Notes:
+# - The configuration file must be in dotnotation format (from config_export).
+# - The firmware version and SKU of the file must match the target device.
+# - If errors are encountered, the device will automatically roll back.
+# - For full configuration replacement, use config_restore instead.
+# - Use config_diff to preview changes before importing.
+- name: Demonstrate config import module
+  hosts: opengear
+  gather_facts: false
+
+  tasks:
+    # Assume config_export performed, the config will be imported and merged
+    - name: Import configuration
+      opengear.ng.config_import:
+        config_content: "{{ lookup('file', backup_path + '/config-backup-' + inventory_hostname + '.cfg') }}"
+      vars:
+        ansible_connection: ssh
+      register: import_result
+
+    - name: Show import result
+      ansible.builtin.debug:
+        var: import_result.msg

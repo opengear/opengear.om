@@ -21,6 +21,7 @@ The Opengear NG collection supports the following Opengear product families:
 | opengear.ng.conns                | Manage network connection configuration.                                                             |
 | opengear.ng.config_diff          | Compare current device configuration to file.                                                        |
 | opengear.ng.config_export        | Export current device configuration to file.                                                         |
+| opengear.ng.config_import        | Import device configuration from file merging with current device configuration.                     |
 | opengear.ng.config_restore       | Restore device configuration from file.                                                              |
 | opengear.ng.facts                | Gather device information and network resource configuration facts.                                  |
 | opengear.ng.failover             | Manage failover configuration and retrieve failover status.                                          |
@@ -43,11 +44,13 @@ The following modules are exceptions that require `ansible_connection: ssh` to
 be used and do not support the default `httpapi` connection.
 
 - [opengear.ng.config_diff][]
+- [opengear.ng.config_import][]
 
 See each module's documentation and examples for configuration and usage
 alongside httpapi modules.
 
 [opengear.ng.config_diff]: plugins/modules/config_diff.py
+[opengear.ng.config_import]: plugins/modules/config_import.py
 
 ## Installing The Collection
 
