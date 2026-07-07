@@ -14,15 +14,12 @@ The Opengear NG collection supports the following Opengear product families:
 - CM80xx
 - CM81xx
 
-## Connections
-Modules in this collection use the Ansible `httpapi` connection plugin by default
-to communicate with Opengear devices via the REST API.
-
 ## Modules
 | Name                             | Description                                                                                          |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | opengear.ng.auth                 | Manage remote authentication, authorization, and accounting (AAA) configuration.                     |
 | opengear.ng.conns                | Manage network connection configuration.                                                             |
+| opengear.ng.config_diff          | Compare current device configuration to file.                                                        |
 | opengear.ng.config_export        | Export current device configuration to file.                                                         |
 | opengear.ng.config_restore       | Restore device configuration from file.                                                              |
 | opengear.ng.facts                | Gather device information and network resource configuration facts.                                  |
@@ -37,6 +34,20 @@ to communicate with Opengear devices via the REST API.
 | opengear.ng.system               | Manage device system configuration and retrieve device information.                                  |
 | opengear.ng.user_authorized_keys | Manage configuration of user authorized keys on Opengear devices.                                    |
 | opengear.ng.users                | Manage user configuration.                                                                           |
+
+## Connections
+Modules in this collection use the Ansible `httpapi` connection plugin by default
+to communicate with Opengear devices via the REST API.
+
+The following modules are exceptions that require `ansible_connection: ssh` to
+be used and do not support the default `httpapi` connection.
+
+- [opengear.ng.config_diff][]
+
+See each module's documentation and examples for configuration and usage
+alongside httpapi modules.
+
+[opengear.ng.config_diff]: plugins/modules/config_diff.py
 
 ## Installing The Collection
 
