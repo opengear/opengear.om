@@ -28,4 +28,21 @@ runs:
         env:
           ansible_collections: "/home/runner/.ansible/collections/ansible_collections"
         working-directory: ${{ env.ansible_collections }}/opengear/ng
-        run: ansible-test sanity --docker --python ${{ inputs.python-version }}
+        run: |
+          ansible-test sanity --docker --python ${{ inputs.python-version }} 2> &1 | tee sanity-output.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Summarise sanity tests
+        if: always()
+        shell: bash
+        run: |
+          if [ "${{ steps.sanity.outcome }}" = "success" ]; then
+            echo "### ✅ Sanity Tests" >> "$GITHUB_STEP_SUMMARY"
+            echo "No issues" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "### ❌ Sanity Tests" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo '```text' >> "$GITHUB_STEP_SUMMARY"
+            cat sanity-output.txt >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
