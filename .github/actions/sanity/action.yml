@@ -24,6 +24,7 @@ runs:
           ansible-galaxy collection install ${{ github.workspace }} --force
 
       - name: Run sanity tests
+        id: sanity
         shell: bash
         env:
           ansible_collections: "/home/runner/.ansible/collections/ansible_collections"
