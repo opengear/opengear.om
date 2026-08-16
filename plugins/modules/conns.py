@@ -97,29 +97,6 @@ options:
     default: merged
 """
 
-EXAMPLES = """
-- name: Configure a network connection
-  opengear.ng.conns:
-    config:
-      - description: static-ipv4-net1
-        mode: static
-        physif: net1
-        ipv4_static_settings:
-          netmask: "255.255.255.0"
-          address: "192.168.1.2"
-          broadcast: "192.168.1.255"
-          gateway: "192.168.1.1"
-      - description: dynamic-ipv6-net1
-        mode: ipv6_automatic
-        physif: net1
-    state: merged
-
-- name: Gather connection facts
-  opengear.ng.facts:
-    gather_network_resources:
-      - conns
-"""
-
 RETURN = """
 before:
   description: The configuration before the module is executed.
