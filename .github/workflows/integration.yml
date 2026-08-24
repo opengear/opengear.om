@@ -25,6 +25,9 @@ jobs:
           # workflow_dispatch: use provided ref, or the branch the dispatch was triggered on
           # pull_request_target: always use the PR head SHA (not the base branch default)
           ref: ${{ inputs.pr_ref || github.event.pull_request.head.sha || github.sha }}
+          # Safe to opt in: the environment approval gate requires a human to review
+          # the PR code before this step runs, mitigating the pwn-request risk.
+          allow-unsafe-pr-checkout: true
 
       - name: Build inventory
         run: |
