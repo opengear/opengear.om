@@ -19,16 +19,25 @@ class FailoverArgs(object):  # pylint: disable=R0903
 
     argument_spec = {
         "config": {
+            "type": "dict",
             "options": {
                 "enabled": {"type": "bool"},
-                "probe_address": {"type": "str"},
                 "probe_physif": {"type": "str"},
+                "probe_address": {"type": "str"},
+                "probe_address_2": {"type": "str"},
+                "dormant_dns": {"type": "bool"},
+                "failover_physif": {"type": "str"},
             },
-            "type": "dict",
         },
         "state": {
-            "choices": ["merged", "replaced", "overridden", "gathered", "rendered"],
-            "default": "merged",
             "type": "str",
+            "default": "merged",
+            "choices": [
+                "merged",
+                "replaced",
+                "overridden",
+                "gathered",
+                "rendered",
+            ],
         },
     }  # pylint: disable=C0301

@@ -21,7 +21,9 @@ module: failover
 version_added: '1.0.0'
 short_description: Manages configuration of failover behavior on Opengear devices
 description:
-  - Manages configuration of failover behavior on Opengear devices
+  - Manages failover settings on Opengear devices.
+  - The failover resource is a singleton — only one set of settings exists on the device.
+  - C(replaced) and C(overridden) behave identically for this resource.
 author:
   - Opengear (@opengear)
 options:
@@ -30,36 +32,72 @@ options:
     type: dict
     suboptions:
       enabled:
+        description: Enable or disable failover.
         type: bool
-        description: failover enabled or disabled
       probe_physif:
-        description: A Failover event occurs if the probe_address is not reachable on this network interface.
+        description:
+          - The interface through which the device will attempt to probe I(probe_address).
+          - A failover event occurs if I(probe_address) is not reachable on this interface.
+          - Optional when failover is disabled.
         type: str
       probe_address:
-        description: Probe address can be an IPv4/6 address or hostname
+        description:
+          - Probe address; an IPv4 address, IPv6 address, or hostname.
+          - A failover event occurs if this address is not reachable via I(probe_physif).
+          - Be aware that hostnames may not resolve during failover depending on DNS settings.
         type: str
-
+      probe_address_2:
+        description:
+          - Secondary probe address; an IPv4 address, IPv6 address, or hostname.
+          - If configured, this address is probed via I(probe_physif) when I(probe_address)
+            is not reachable. A failover event occurs if this address is also not reachable.
+          - Be aware that hostnames may not resolve during failover depending on DNS settings.
+        type: str
+      dormant_dns:
+        description:
+          - When C(true), DNS is not configured for the failover interface during normal
+            operation. During failover, DNS is restored on that interface.
+        type: bool
+      failover_physif:
+        description:
+          - The network interface to fail over to.
+          - If this field is omitted when failover is enabled, it defaults to C(wwan0)
+            for compatibility with older releases.
+          - Optional when failover is disabled.
+        type: str
   state:
     description:
-    - The state of the configuration after module completion.
+      - The state of the configuration after module completion.
     type: str
     choices:
-    - merged
-    - replaced
-    - overridden
-    - gathered
-    - rendered
+      - merged
+      - replaced
+      - overridden
+      - gathered
+      - rendered
     default: merged
 """
 
 EXAMPLES = """
-- name: Configure failover
+- name: Enable failover, probing 8.8.8.8 and 1.1.1.1 via net1, failing over to wwan0
   opengear.ng.failover:
     config:
       enabled: true
-      probe_address: 8.8.8.8
       probe_physif: net1
+      probe_address: 8.8.8.8
+      probe_address_2: 1.1.1.1
+      failover_physif: wwan0
+      dormant_dns: false
     state: merged
+
+- name: Replace failover settings (sends only the specified fields)
+  opengear.ng.failover:
+    config:
+      enabled: true
+      probe_physif: net1
+      probe_address: 8.8.8.8
+      failover_physif: wwan0
+    state: replaced
 
 - name: Disable failover
   opengear.ng.failover:
@@ -67,7 +105,11 @@ EXAMPLES = """
       enabled: false
     state: merged
 
-- name: Gather failover facts
+- name: Gather current failover settings
+  opengear.ng.failover:
+    state: gathered
+
+- name: Gather failover facts via facts module
   opengear.ng.facts:
     gather_network_resources:
       - failover

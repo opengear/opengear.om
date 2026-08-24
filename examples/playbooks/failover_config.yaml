@@ -1,0 +1,36 @@
+---
+- name: Example playbook to configure failover with cell modem
+  hosts: opengear
+  gather_facts: false
+
+  tasks:
+    - name: Gather current failover settings
+      opengear.ng.failover:
+        state: gathered
+      register: failover_facts
+
+    - name: Enable failover via wwan0, probing 8.8.8.8 and 1.1.1.1
+      opengear.ng.failover:
+        config:
+          enabled: true
+          probe_physif: net1
+          probe_address: 8.8.8.8
+          probe_address_2: 1.1.1.1
+          failover_physif: wwan0
+          dormant_dns: false
+        state: merged
+
+    - name: Replace failover settings (sends only specified fields)
+      opengear.ng.failover:
+        config:
+          enabled: true
+          probe_physif: net1
+          probe_address: 8.8.8.8
+          failover_physif: wwan0
+        state: replaced
+
+    - name: Disable failover
+      opengear.ng.failover:
+        config:
+          enabled: false
+        state: merged
