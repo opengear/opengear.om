@@ -29,6 +29,7 @@ The Opengear NG collection supports the following Opengear product families:
 | opengear.ng.pdu                     | Manage PDUs connected to the device, including configuration, monitoring, and control.               |
 | opengear.ng.physifs                 | Manage physical network interface configuration.                                                     |
 | opengear.ng.ports_config            | Manage serial port configuration.                                                                    |
+| opengear.ng.ports_auto_discover     | Manage port auto-discovery on Opengear devices.                                                      |
 | opengear.ng.ports_control           | Send control commands to serial ports.                                                               |
 | opengear.ng.ports_sessions          | Gather and manage active pmshell sessions on serial ports.                                           |
 | opengear.ng.ports_status            | Gather live status for serial ports.                                                                 |
@@ -146,6 +147,7 @@ Use `opengear.ng.facts` with `gather_network_resources` to retrieve device facts
 | `groups`                 | User group configuration.                                                |
 | `pdu`                    | PDU configuration and status.                                            |
 | `physifs`                | Physical network interface configuration.                                |
+| `ports_auto_discover`    | Port auto-discovery schedule and status.                                 |
 | `ports_config`           | Serial port configuration.                                               |
 | `ports_sessions`         | Active pmshell sessions on serial ports.                                 |
 | `ports_status`           | Live port status.                                                        |
