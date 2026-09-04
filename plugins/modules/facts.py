@@ -48,7 +48,7 @@ options:
       - failover
       - groups
       - physifs
-      - ports
+      - ports_config
       - pdu
       - services
       - static_routes
