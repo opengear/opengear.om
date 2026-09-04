@@ -29,6 +29,7 @@ The Opengear NG collection supports the following Opengear product families:
 | opengear.ng.pdu                     | Manage PDUs connected to the device, including configuration, monitoring, and control.               |
 | opengear.ng.physifs                 | Manage physical network interface configuration.                                                     |
 | opengear.ng.ports_config            | Manage serial port configuration.                                                                    |
+| opengear.ng.ports_status            | Gather live status for serial ports.                                                                 |
 | opengear.ng.services                | Manage system service configuration.                                                                 |
 | opengear.ng.static_routes           | Manage static route configuration.                                                                   |
 | opengear.ng.system_config           | Manage general system configuration including admin info, banner, FIPS, and session timeouts.        |
@@ -144,6 +145,7 @@ Use `opengear.ng.facts` with `gather_network_resources` to retrieve device facts
 | `pdu`                    | PDU configuration and status.                                            |
 | `physifs`                | Physical network interface configuration.                                |
 | `ports_config`           | Serial port configuration.                                               |
+| `ports_status`           | Live port status.                                                        |
 | `services`               | System service configuration.                                            |
 | `static_routes`          | Static route configuration.                                              |
 | `system_authorized_keys` | System-level SSH authorized keys.                                        |
