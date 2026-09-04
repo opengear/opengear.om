@@ -9,6 +9,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible_collections.opengear.ng.plugins.module_utils.facts.auth import AuthFacts
+from ansible_collections.opengear.ng.plugins.module_utils.facts.ports_auto_discover import PortsAutoDiscoverFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.base import FactsBase
 from ansible_collections.opengear.ng.plugins.module_utils.facts.conns import ConnsFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.failover import FailoverFacts
@@ -33,6 +34,7 @@ FACT_LEGACY_SUBSETS = {}
 
 # Subsets excluded from 'all' must be requested explicitly.
 OPT_IN_SUBSETS = frozenset([
+    'ports_auto_discover',
     'ports_sessions',
     'ports_status',
     'system_authorized_keys',
@@ -42,6 +44,7 @@ OPT_IN_SUBSETS = frozenset([
 
 FACT_RESOURCE_SUBSETS = dict(
     auth=AuthFacts,
+    ports_auto_discover=PortsAutoDiscoverFacts,
     conns=ConnsFacts,
     failover=FailoverFacts,
     groups=GroupsFacts,

@@ -1,0 +1,57 @@
+---
+- name: Example playbook for managing port auto-discovery
+  hosts: opengear
+  gather_facts: false
+
+  tasks:
+    - name: Gather current auto-discovery status and schedule
+      opengear.ng.ports_auto_discover:
+        state: gathered
+      register: ad_facts
+
+    - name: Show discovery status
+      ansible.builtin.debug:
+        var: ad_facts.gathered.status
+
+    - name: Preview a schedule change without connecting to the device
+      opengear.ng.ports_auto_discover:
+        config:
+          schedule:
+            enabled: true
+            period: daily
+            hour: 4
+        state: rendered
+
+    - name: Configure a daily auto-discovery schedule
+      opengear.ng.ports_auto_discover:
+        config:
+          schedule:
+            enabled: true
+            period: daily
+            hour: 2
+            minute: 30
+            ports:
+              - 1
+              - 2
+              - 3
+
+    - name: Trigger discovery on specific ports with credentials
+      opengear.ng.ports_auto_discover:
+        trigger:
+          ports:
+            - 1
+            - 5
+            - 10
+          username: admin
+          password: "{{ discovery_password }}"
+          apply_config: true
+
+    - name: Cancel a running auto-discovery job
+      opengear.ng.ports_auto_discover:
+        cancel: true
+
+    - name: Disable scheduled auto-discovery
+      opengear.ng.ports_auto_discover:
+        config:
+          schedule:
+            enabled: false

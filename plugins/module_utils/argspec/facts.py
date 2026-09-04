@@ -24,6 +24,7 @@ class FactsArgs(object):  # pylint: disable=R0903
         "failover",
         "groups",
         "physifs",
+        "ports_auto_discover",
         "ports_config",
         "ports_sessions",
         "ports_status",
