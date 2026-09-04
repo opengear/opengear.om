@@ -1,0 +1,80 @@
+---
+
+- name: Manage serial port configuration
+  hosts: opengear
+  gather_facts: false
+  tasks:
+
+    - name: Gather port facts
+      opengear.ng.facts:
+        gather_network_resources:
+          - ports_config
+
+    - name: Configure console server ports (merged)
+      opengear.ng.ports_config:
+        config:
+          - portnum: 1
+            label: router-console
+            mode: consoleServer
+            baudrate: '9600'
+            databits: '8'
+            parity: none
+            stopbits: '1'
+            logging_level: eventsOnly
+            escape_char: '~'
+          - portnum: 2
+            label: switch-console
+            mode: consoleServer
+            baudrate: '115200'
+            databits: '8'
+            parity: none
+            stopbits: '1'
+            single_session: true
+        state: merged
+
+    - name: Set port config (replaced)
+      opengear.ng.ports_config:
+        config:
+          - portnum: 3
+            label: local-console
+            mode: localConsole
+            terminal_emulation: vt220
+            kernel_debug: false
+        state: replaced
+
+    - name: Add an IP alias for dedicated port access
+      opengear.ng.ports_config:
+        config:
+          - portnum: 4
+            mode: consoleServer
+            ip_alias:
+              - ipaddress: 192.168.100.1
+                interface: net1
+        state: merged
+
+    - name: Set a custom pmshell quit sequence (merged)
+      opengear.ng.ports_config:
+        config:
+          - portnum: 1
+            control_code:
+              quit: '~.'
+        state: merged
+
+    - name: Disable a port by id
+      opengear.ng.ports_config:
+        config:
+          - id: ports-8
+            mode: disabled
+        state: merged
+
+    - name: Gather live port status
+      opengear.ng.ports_status:
+        state: gathered
+      register: port_status
+
+    - name: Show port status
+      ansible.builtin.debug:
+        msg: >
+          Port {{ item.portnum }} ({{ item.label | default('unlabelled') }})
+          status={{ item.status }}
+      loop: "{{ port_status.gathered }}"

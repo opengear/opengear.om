@@ -15,7 +15,7 @@ from ansible_collections.opengear.ng.plugins.module_utils.facts.failover import 
 from ansible_collections.opengear.ng.plugins.module_utils.facts.groups import GroupsFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.pdu import PduFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.physifs import PhysifsFacts
-from ansible_collections.opengear.ng.plugins.module_utils.facts.ports import PortsFacts
+from ansible_collections.opengear.ng.plugins.module_utils.facts.ports_config import PortsConfigFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.services import ServicesFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.static_routes import StaticRoutesFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.system_config import SystemConfigFacts
@@ -43,7 +43,7 @@ FACT_RESOURCE_SUBSETS = dict(
     groups=GroupsFacts,
     pdu=PduFacts,
     physifs=PhysifsFacts,
-    ports=PortsFacts,
+    ports_config=PortsConfigFacts,
     services=ServicesFacts,
     static_routes=StaticRoutesFacts,
     system_authorized_keys=SystemAuthorizedKeysFacts,
