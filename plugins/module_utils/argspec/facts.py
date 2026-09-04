@@ -25,6 +25,7 @@ class FactsArgs(object):  # pylint: disable=R0903
         "groups",
         "physifs",
         "ports_config",
+        "ports_status",
         "pdu",
         "services",
         "static_routes",

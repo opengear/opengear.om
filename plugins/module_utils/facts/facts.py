@@ -16,6 +16,7 @@ from ansible_collections.opengear.ng.plugins.module_utils.facts.groups import Gr
 from ansible_collections.opengear.ng.plugins.module_utils.facts.pdu import PduFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.physifs import PhysifsFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.ports_config import PortsConfigFacts
+from ansible_collections.opengear.ng.plugins.module_utils.facts.ports_status import PortsStatusFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.services import ServicesFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.static_routes import StaticRoutesFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.system_config import SystemConfigFacts
@@ -31,6 +32,7 @@ FACT_LEGACY_SUBSETS = {}
 
 # Subsets excluded from 'all' must be requested explicitly.
 OPT_IN_SUBSETS = frozenset([
+    'ports_status',
     'system_authorized_keys',
     'system_firmware_upgrade',
     'user_authorized_keys',
@@ -44,6 +46,7 @@ FACT_RESOURCE_SUBSETS = dict(
     pdu=PduFacts,
     physifs=PhysifsFacts,
     ports_config=PortsConfigFacts,
+    ports_status=PortsStatusFacts,
     services=ServicesFacts,
     static_routes=StaticRoutesFacts,
     system_authorized_keys=SystemAuthorizedKeysFacts,

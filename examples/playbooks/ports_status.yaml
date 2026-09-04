@@ -1,0 +1,26 @@
+---
+- name: Example playbook for gathering serial port status
+  hosts: opengear
+  gather_facts: false
+
+  tasks:
+    - name: Gather port status
+      opengear.ng.ports_status:
+        state: gathered
+      register: ports_status
+
+    # 'disconnected' is a normal, expected status for an unused port (e.g. an
+    # empty USB slot) - only 'ok' and 'disconnected' are healthy states here.
+    - name: Assert no ports report an unexpected status
+      ansible.builtin.assert:
+        that:
+          - item.status in ['ok', 'disconnected']
+        fail_msg: "Port {{ item.portnum }} status is {{ item.status }}"
+      loop: "{{ ports_status.gathered }}"
+
+    - name: Show serial pin signal states and byte counters
+      ansible.builtin.debug:
+        msg: >
+          Port {{ item.portnum }}: dcd={{ item.dcd }}, dsr={{ item.dsr }},
+          tx={{ item.tx }} bytes, rx={{ item.rx }} bytes
+      loop: "{{ ports_status.gathered }}"
