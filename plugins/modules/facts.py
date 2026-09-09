@@ -37,7 +37,7 @@ options:
     description:
       - When supplied, this argument will restrict the facts collected to a given subset.
       - Use C(all) to gather all subsets except opt-in facts that must be requested explicitly
-      - "Opt-in facts are: C(system_firmware_upgrade, user_authorized_keys, system_authorized_keys, ports_status)"
+      - "Opt-in facts are: C(system_firmware_upgrade, user_authorized_keys, system_authorized_keys, ports_status, ports_sessions)"
     required: false
     type: list
     elements: str
@@ -49,6 +49,7 @@ options:
       - groups
       - physifs
       - ports_config
+      - ports_sessions
       - ports_status
       - pdu
       - services
