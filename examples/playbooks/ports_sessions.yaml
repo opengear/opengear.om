@@ -1,0 +1,37 @@
+---
+- name: Example playbook for terminating serial port sessions
+  hosts: opengear
+  gather_facts: false
+
+  tasks:
+    - name: Check current sessions before acting
+      opengear.ng.ports_sessions:
+      register: ports_sessions
+
+    - name: Show ports with active sessions
+      ansible.builtin.debug:
+        msg: "Port {{ item.portnum }}: {{ item.sessions }}"
+      loop: "{{ ports_sessions.gathered }}"
+      when: item.sessions | length > 0
+
+    - name: Terminate all sessions on port 2
+      opengear.ng.ports_sessions:
+        state: deleted
+        config:
+          - portnum: 2
+
+    - name: Terminate a specific session by PID
+      opengear.ng.ports_sessions:
+        state: deleted
+        config:
+          - portnum: 3
+            client_pid:
+              - 12345
+
+    - name: Terminate all sessions across multiple ports
+      opengear.ng.ports_sessions:
+        state: deleted
+        config:
+          - portnum: 1
+          - portnum: 4
+          - portnum: 5
