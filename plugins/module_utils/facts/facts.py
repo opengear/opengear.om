@@ -15,6 +15,7 @@ from ansible_collections.opengear.ng.plugins.module_utils.facts.conns import Con
 from ansible_collections.opengear.ng.plugins.module_utils.facts.failover import FailoverFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.groups import GroupsFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.pdu_config import PduConfigFacts
+from ansible_collections.opengear.ng.plugins.module_utils.facts.pdu_status import PduStatusFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.physifs import PhysifsFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.ports_config import PortsConfigFacts
 from ansible_collections.opengear.ng.plugins.module_utils.facts.ports_sessions import PortsSessionsFacts
@@ -34,6 +35,7 @@ FACT_LEGACY_SUBSETS = {}
 
 # Subsets excluded from 'all' must be requested explicitly.
 OPT_IN_SUBSETS = frozenset([
+    'pdu_status',
     'ports_auto_discover',
     'ports_sessions',
     'ports_status',
@@ -49,6 +51,7 @@ FACT_RESOURCE_SUBSETS = dict(
     failover=FailoverFacts,
     groups=GroupsFacts,
     pdu_config=PduConfigFacts,
+    pdu_status=PduStatusFacts,
     physifs=PhysifsFacts,
     ports_config=PortsConfigFacts,
     ports_sessions=PortsSessionsFacts,
