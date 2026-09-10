@@ -1,0 +1,23 @@
+---
+- name: Gather PDU status
+  hosts: opengear
+  connection: httpapi
+  gather_facts: false
+  tasks:
+    - name: Gather PDU and outlet status
+      opengear.ng.pdu_status:
+        state: gathered
+      register: pdu_status
+
+    - name: Show each PDU's outlet count and outlets
+      ansible.builtin.debug:
+        msg: "{{ item.name }}: {{ item.outlet_count | default(item.outlets | length) }} outlet(s)"
+      loop: "{{ pdu_status.gathered }}"
+
+    - name: Assert no outlet reports an unexpected status
+      ansible.builtin.assert:
+        that:
+          - item.1.status in ['on', 'off']
+        fail_msg: "{{ item.0.name }} outlet {{ item.1.number }} status is {{ item.1.status }}"
+      loop: "{{ pdu_status.gathered | subelements('outlets') }}"
+      when: item.1.status is defined
