@@ -129,6 +129,54 @@ class TestPortsAutoDiscoverModule(TestModuleBase):
             }
         ])
 
+    # --- diff mode ---
+
+    def test_diff_merged_update(self):
+        """Diff output shows before and after for a merged schedule update."""
+        set_module_args({
+            '_ansible_diff': True,
+            'config': {'schedule': {'enabled': True}},
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=True)
+        self.assertIn('diff', result)
+        self.assertEqual(result['diff']['before'], HAVE_SCHEDULE)
+        self.assertEqual(result['diff']['after'], dict(HAVE_SCHEDULE, enabled=True))
+
+    def test_no_diff_when_not_requested(self):
+        """Diff key is absent when _ansible_diff is not set."""
+        set_module_args({
+            'config': {'schedule': {'enabled': True}},
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=True)
+        self.assertNotIn('diff', result)
+
+    def test_no_diff_when_idempotent(self):
+        """Diff key is absent when there are no changes."""
+        set_module_args({
+            '_ansible_diff': True,
+            'config': {'schedule': dict(HAVE_SCHEDULE)},
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=False)
+        self.assertNotIn('diff', result)
+
+    def test_check_mode_with_diff(self):
+        """Check mode combined with diff mode generates diff without sending the PUT."""
+        set_module_args({
+            '_ansible_check_mode': True,
+            '_ansible_diff': True,
+            'config': {'schedule': {'enabled': True}},
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=True)
+        # Only the schedule fetch (to compute "have") should have been sent - no PUT.
+        self.assertEqual(self.connection.return_value.send_request.call_count, 1)
+        self.assertIn('diff', result)
+        self.assertEqual(result['diff']['before'], HAVE_SCHEDULE)
+        self.assertEqual(result['diff']['after'], dict(HAVE_SCHEDULE, enabled=True))
+
     # --- trigger ---
 
     def test_trigger_all_ports(self):
