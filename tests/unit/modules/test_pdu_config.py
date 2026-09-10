@@ -7,6 +7,8 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+import json
+
 from ansible_collections.opengear.ng.tests.unit.compat.mock import patch
 from ansible_collections.opengear.ng.plugins.modules import pdu_config
 from ansible_collections.opengear.ng.tests.unit.modules.utils import set_module_args
@@ -237,3 +239,55 @@ class TestPduConfigModule(TestModuleBase):
             {'data': None, 'path': 'pdus/pdus-3', 'method': 'DELETE'},
         ]
         self.execute_module(changed=True, commands=commands)
+
+    # --- diff mode ---
+
+    def test_diff_merged_update(self):
+        """Diff output shows before and after for a merged update."""
+        set_module_args({
+            '_ansible_diff': True,
+            'config': [{'name': 'rack-pdu-02', 'monitor': False}],
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=True)
+        self.assertIn('diff', result)
+        before = json.loads(result['diff']['before'])
+        after = json.loads(result['diff']['after'])
+        self.assertEqual(len(before), 1)
+        self.assertEqual(before[0]['monitor'], True)
+        self.assertEqual(after[0]['monitor'], False)
+
+    def test_no_diff_when_not_requested(self):
+        """Diff key is absent when _ansible_diff is not set."""
+        set_module_args({
+            'config': [{'name': 'rack-pdu-02', 'monitor': False}],
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=True)
+        self.assertNotIn('diff', result)
+
+    def test_no_diff_when_idempotent(self):
+        """Diff key is absent when there are no changes."""
+        set_module_args({
+            '_ansible_diff': True,
+            'config': [{'name': 'rack-pdu-01', 'monitor': True, 'method': 'snmp'}],
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=False)
+        self.assertNotIn('diff', result)
+
+    def test_check_mode_with_diff(self):
+        """Check mode combined with diff mode generates diff without sending."""
+        set_module_args({
+            '_ansible_check_mode': True,
+            '_ansible_diff': True,
+            'config': [{'name': 'rack-pdu-03', 'monitor': True}],
+            'state': 'merged',
+        })
+        result = self.execute_module(changed=True)
+        self.connection.return_value.send_request.assert_not_called()
+        self.assertIn('diff', result)
+        before = json.loads(result['diff']['before'])
+        after = json.loads(result['diff']['after'])
+        self.assertEqual(before[0]['monitor'], False)
+        self.assertEqual(after[0]['monitor'], True)
