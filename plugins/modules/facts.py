@@ -47,12 +47,12 @@ options:
       - conns
       - failover
       - groups
+      - pdu_config
       - physifs
       - ports_auto_discover
       - ports_config
       - ports_sessions
       - ports_status
-      - pdu
       - services
       - static_routes
       - system_authorized_keys

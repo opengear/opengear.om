@@ -9,6 +9,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from copy import deepcopy
+import json
 
 from ansible.module_utils.connection import ConnectionError
 
@@ -23,10 +24,45 @@ from ansible_collections.opengear.ng.plugins.module_utils.utils.utils import (
     to_list,
 )
 
+# Identification-only field that must not appear in PUT/POST request bodies
+_TOP_BODY_EXCLUDE = frozenset({"id"})
 
-class Pdu(ConfigBase):
+# Nested settings blocks that carry a device-assigned "id" in facts (from
+# serialPduSettingsID / snmpPduSettingsID) that the RAML's write bodies
+# (serialPduSettings / snmpPduSettings) do not accept.
+_NESTED_SETTINGS_KEYS = ("powerman", "shell", "snmp")
+
+
+def _clean_pdu_body(data):
+    """Strip identification-only fields the device rejects from a PDU dict
+    before it is sent as a PUT/POST body: the top-level id, and the
+    device-assigned id and read-only name nested under driver/powerman/
+    shell/snmp (present in facts, but not part of the write schema)."""
+    body = {k: v for k, v in data.items() if k not in _TOP_BODY_EXCLUDE}
+
+    driver = body.get("driver")
+    if isinstance(driver, dict):
+        body["driver"] = {k: v for k, v in driver.items() if k != "name"}
+
+    for key in _NESTED_SETTINGS_KEYS:
+        settings = body.get(key)
+        if isinstance(settings, dict):
+            body[key] = {k: v for k, v in settings.items() if k != "id"}
+
+    return body
+
+
+def _outlets_equal(a, b):
+    """Compare two outlet lists order-insensitively. dict_diff/sorted()
+    cannot compare lists of dicts directly, so this is done separately."""
+    def key(outlet):
+        return json.dumps(outlet, sort_keys=True)
+    return sorted(a or [], key=key) == sorted(b or [], key=key)
+
+
+class PduConfig(ConfigBase):
     """
-    Manages configuration for PDUs connected to Opengear devices
+    Manages configuration for PDUs connected to Opengear devices.
     """
 
     gather_subset = [
@@ -35,20 +71,20 @@ class Pdu(ConfigBase):
     ]
 
     gather_network_resources = [
-        'pdu',
+        'pdu_config',
     ]
 
     def __init__(self, module):
-        super(Pdu, self).__init__(module)
+        super(PduConfig, self).__init__(module)
 
     def get_pdu_facts(self):
         """ Get the 'facts' (the current configuration)
 
-        :rtype: A dictionary
-        :returns: The current configuration as a dictionary
+        :rtype: A list
+        :returns: The current configuration as a list of PDU dicts
         """
         facts, _warnings = Facts(self._module).get_facts(self.gather_subset, self.gather_network_resources)
-        pdu_facts = facts['ansible_network_resources'].get('pdu')
+        pdu_facts = facts['ansible_network_resources'].get('pdu_config')
         if not pdu_facts:
             return []
         return pdu_facts
@@ -137,22 +173,14 @@ class Pdu(ConfigBase):
     def _state_replaced(want, name_id_map, id_pdu_map):
         """ The command generator when state is replaced
 
+        Delegates to merged: the device requires a complete PDU object on
+        every PUT, so a partial replaced body is rejected outright.
+
         :rtype: A list
         :returns: the commands necessary to migrate the current configuration
                   to the desired configuration
         """
-        commands = []
-        for pdu in want:
-            pdu_id = find_instance_id(name_id_map, 'name', pdu)
-            if pdu_id in id_pdu_map:
-                data = remove_empties(pdu)
-                data['id'] = pdu_id
-                if data == remove_empties(id_pdu_map[pdu_id]):
-                    continue
-            command = command_builder({'pdu': pdu}, 'pdus/', pdu_id)
-            if command:
-                commands.append(command)
-        return commands
+        return PduConfig._state_merged(want, name_id_map, id_pdu_map)
 
     @staticmethod
     def _state_overridden(want, name_id_map, id_pdu_map):
@@ -173,14 +201,19 @@ class Pdu(ConfigBase):
                 pdu_id = find_instance_id(name_id_map, 'name', pdu)
             if pdu_id in deleted_pdus:
                 deleted_pdus.pop(pdu_id)
-        commands.extend(Pdu._state_deleted(deleted_pdus.values(), name_id_map))
+        commands.extend(PduConfig._state_deleted(deleted_pdus.values(), name_id_map))
 
-        commands.extend(Pdu._state_replaced(want, name_id_map, id_pdu_map))
+        commands.extend(PduConfig._state_replaced(want, name_id_map, id_pdu_map))
         return commands
 
     @staticmethod
     def _state_merged(want, name_id_map, id_pdu_map):
         """ The command generator when state is merged
+
+        Outlets are replaced wholesale rather than merged: they are keyed
+        by outlet number, not by dict identity, so a generic dict_merge
+        would append a new duplicate entry instead of updating the
+        matching outlet.
 
         :rtype: A list
         :returns: the commands necessary to merge the provided into
@@ -191,16 +224,23 @@ class Pdu(ConfigBase):
             data = remove_empties(pdu)
             pdu_id = find_instance_id(name_id_map, 'name', data)
             if pdu_id in id_pdu_map:
-                device_pdu = id_pdu_map[pdu_id]
+                device_pdu = deepcopy(id_pdu_map[pdu_id])
+                outlets = data.pop('outlets', None)
+                device_outlets = device_pdu.pop('outlets', None)
                 merged_data = dict_merge(device_pdu, data)
-                if dict_diff(merged_data, device_pdu):
-                    data = merged_data
-                else:
+                merged_outlets = outlets if outlets is not None else device_outlets
+                changed = bool(dict_diff(merged_data, device_pdu)) or not _outlets_equal(
+                    merged_outlets, device_outlets
+                )
+                if not changed:
                     continue
+                merged_data['outlets'] = merged_outlets
+                data = merged_data
                 data.pop('id', None)
             else:
                 pdu_id = None
-            command = command_builder({'pdu': data}, 'pdus/', pdu_id)
+            body = _clean_pdu_body(data)
+            command = command_builder({'pdu': body}, 'pdus/', pdu_id)
             if command:
                 commands.append(command)
         return commands

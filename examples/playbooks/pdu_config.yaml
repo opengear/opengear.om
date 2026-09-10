@@ -1,20 +1,36 @@
 ---
-
-- name: Configure PDU
-  hosts: all
+- name: Configure PDUs
+  hosts: opengear
   connection: httpapi
   gather_facts: false
   tasks:
-    - name: Add static routes
-      opengear.ng.static_routes:
+    - name: Configure a PDU accessed via SNMP
+      opengear.ng.pdu_config:
         config:
-          - destination_address: 192.168.10.16
-            destination_netmask: 3
-            gateway_address: 192.168.0.1
-            metric: 4
-          - destination_address: 192.168.10.14
-            destination_netmask: 4
-            gateway_address: 192.168.0.1
-            metric: 4
-        state:
-          overridden
+          - name: rack-pdu-01
+            driver:
+              id: apc24
+            method: snmp
+            monitor: true
+            snmp:
+              address: 192.168.1.50
+              version: '2c'
+              community: public
+              port: 161
+        state: merged
+
+    - name: Name and map outlets on the PDU
+      opengear.ng.pdu_config:
+        config:
+          - name: rack-pdu-01
+            outlets:
+              - number: 1
+                name: web-server-1
+              - number: 2
+                name: web-server-2
+        state: merged
+
+    - name: Gather PDU configuration
+      opengear.ng.facts:
+        gather_network_resources:
+          - pdu_config
