@@ -27,6 +27,7 @@ The Opengear NG collection supports the following Opengear product families:
 | opengear.ng.failover                | Manage failover configuration and retrieve failover status.                                          |
 | opengear.ng.groups                  | Manage user group configuration.                                                                     |
 | opengear.ng.pdu_config              | Manage configuration for PDUs connected to the device.                                               |
+| opengear.ng.pdu_control             | Send power actions to PDU outlets.                                                                   |
 | opengear.ng.pdu_status              | Gather live status for PDUs and their outlets.                                                       |
 | opengear.ng.physifs                 | Manage physical network interface configuration.                                                     |
 | opengear.ng.ports_config            | Manage serial port configuration.                                                                    |

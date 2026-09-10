@@ -1,0 +1,31 @@
+---
+
+- name: Control PDU outlets
+  hosts: opengear
+  connection: httpapi
+  gather_facts: false
+  tasks:
+    - name: Power cycle outlet 1 on a PDU identified by name
+      opengear.ng.pdu_control:
+        config:
+          - name: rack-pdu-01
+            outlets: [1]
+            action: cycle
+
+    - name: Power off multiple outlets across multiple PDUs
+      opengear.ng.pdu_control:
+        config:
+          - name: rack-pdu-01
+            outlets: [2, 3]
+            action: 'off'
+          - name: rack-pdu-02
+            outlets: [1]
+            action: 'off'
+
+    - name: Preview a control command without sending it (check mode)
+      opengear.ng.pdu_control:
+        config:
+          - name: rack-pdu-01
+            outlets: [1]
+            action: cycle
+      check_mode: true
