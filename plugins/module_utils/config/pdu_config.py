@@ -76,14 +76,17 @@ class PduConfig(ConfigBase):
 
     def __init__(self, module):
         super(PduConfig, self).__init__(module)
+        self.current_state = {}
 
-    def get_pdu_facts(self):
+    def get_pdu_facts(self, data=None):
         """ Get the 'facts' (the current configuration)
 
         :rtype: A list
         :returns: The current configuration as a list of PDU dicts
         """
-        facts, _warnings = Facts(self._module).get_facts(self.gather_subset, self.gather_network_resources)
+        facts, _warnings = Facts(self._module).get_facts(
+            self.gather_subset, self.gather_network_resources, data
+        )
         pdu_facts = facts['ansible_network_resources'].get('pdu_config')
         if not pdu_facts:
             return []
@@ -109,21 +112,53 @@ class PduConfig(ConfigBase):
             if not self._module.check_mode:
                 for command in commands:
                     try:
-                        self._connection.send_request(command['data'], command['path'], command['method'])
+                        response = self._connection.send_request(
+                            command['data'], command['path'], command['method']
+                        )
+                        if command['method'] in ('PUT', 'POST'):
+                            updated_pdu = response.get('pdu', {})
+                            pdu_id = updated_pdu.get('id') or command['path'].split('/')[-1]
+                            if pdu_id:
+                                self.current_state[pdu_id] = updated_pdu
                     except ConnectionError as exc:
                         if not exc.args[0].startswith('Expecting value:'):
                             raise exc
+            else:
+                # Simulate state changes for check mode + diff
+                for command in commands:
+                    if command['method'] == 'PUT':
+                        pdu_id = command['path'].split('/')[-1]
+                        if pdu_id in self.current_state:
+                            self.current_state[pdu_id].update(command['data']['pdu'])
             result['changed'] = True
         if self.state in self.ACTION_STATES:
             result['commands'] = commands
         if self.state in self.ACTION_STATES or self.state == 'gathered':
-            changed_pdu_facts = self.get_pdu_facts()
+            changed_pdu_facts = self.get_pdu_facts(self.current_state.values())
         elif self.state == 'rendered':
             result['rendered'] = commands
         if self.state in self.ACTION_STATES:
             result['before'] = existing_pdu_facts
             if result['changed']:
                 result['after'] = changed_pdu_facts
+                if self._module._diff:
+                    diff_before = []
+                    diff_after = []
+                    existing_by_id = {
+                        p['id']: p for p in existing_pdu_facts if p.get('id')
+                    }
+                    for command in commands:
+                        if command['method'] == 'PUT':
+                            pdu_id = command['path'].split('/')[-1]
+                            if pdu_id in existing_by_id:
+                                before = existing_by_id[pdu_id]
+                                after = {**before, **command['data']['pdu']}
+                                diff_before.append(before)
+                                diff_after.append(after)
+                    result['diff'] = {
+                        'before': json.dumps(diff_before, indent=4) + '\n',
+                        'after': json.dumps(diff_after, indent=4) + '\n',
+                    }
         elif self.state == 'gathered':
             result['gathered'] = changed_pdu_facts
 
@@ -157,6 +192,8 @@ class PduConfig(ConfigBase):
         for pdu in have:
             name_id_map[pdu['name']] = pdu['id']
             id_pdu_map[pdu['id']] = pdu
+
+        self.current_state = deepcopy(id_pdu_map)
 
         state = self._module.params['state']
         if state == 'overridden':

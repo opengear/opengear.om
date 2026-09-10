@@ -27,6 +27,11 @@ description:
   - Read-only fields (outlet status, outlet_count, last_action) are returned
     by the M(opengear.ng.pdu_status) module.
   - Outlet power control is handled by M(opengear.ng.pdu_control).
+notes:
+  - Diff output shows the expected configuration change based on the commands
+    generated. It does not reflect the actual device state after execution,
+    which may differ due to device-side normalization or concurrent changes.
+    Use state=gathered after a run to verify the actual device state.
 author:
   - Opengear (@opengear)
 options:
@@ -249,6 +254,12 @@ commands:
   description: The set of commands pushed to the remote device.
   returned: always
   type: list
+diff:
+  description: >
+    A before/after JSON diff of the changed PDUs when diff mode is enabled.
+    Only present when changes were made.
+  returned: when changed and diff mode is active
+  type: dict
 """
 
 from ansible.module_utils.basic import AnsibleModule
